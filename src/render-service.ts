@@ -7,7 +7,7 @@ import { readFile, rm } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
 import { bundle } from '@remotion/bundler';
-import { openBrowser, renderMedia, renderStill, selectComposition, type HeadlessBrowser } from '@remotion/renderer';
+import { makeCancelSignal, openBrowser, renderMedia, renderStill, selectComposition, type HeadlessBrowser } from '@remotion/renderer';
 import { cardSchema } from './schema.ts';
 
 const HOST = process.env.RENDER_HOST ?? '0.0.0.0';
@@ -121,8 +121,161 @@ async function renderReel(input: unknown): Promise<Buffer> {
   }
 }
 
+// --- Job video (bất đồng bộ, có tiến độ, hủy được) ---
+// PeaPod tạo job, hỏi trạng thái định kỳ, tải MP4 khi xong, hoặc hủy. Trạng thái nằm trong bộ nhớ;
+// job xong giữ file 30 phút rồi xóa. Máy chủ khởi động lại thì job mất (PeaPod sẽ báo lỗi và cho dựng lại).
+type JobState = 'queued' | 'rendering' | 'finalizing' | 'done' | 'error' | 'cancelled';
+interface Job {
+  id: string;
+  state: JobState;
+  progress: number;
+  frames: number;
+  totalFrames: number;
+  etaSeconds: number | null;
+  createdAt: number;
+  startedAt: number | null;
+  finishedAt: number | null;
+  file: string | null;
+  error: string | null;
+  cancel: (() => void) | null;
+}
+const jobs = new Map<string, Job>();
+const JOB_KEEP_MS = 30 * 60_000;
+const JOB_MAX_AGE_MS = 2 * 3600_000;
+
+// Hàm riêng để TypeScript không thu hẹp kiểu trạng thái sau các phép gán.
+const isCancelled = (job: Job): boolean => job.state === 'cancelled';
+
+function etaOf(job: Job): number | null {
+  if (!job.startedAt || job.progress < 0.02) return null;
+  const elapsed = (Date.now() - job.startedAt) / 1000;
+  return Math.max(0, Math.round((elapsed / job.progress) * (1 - job.progress)));
+}
+
+async function runReelJob(job: Job, props: ReturnType<typeof cardSchema.parse>): Promise<void> {
+  await acquire();
+  try {
+    if (isCancelled(job)) return;
+    const { cancelSignal, cancel } = makeCancelSignal();
+    job.cancel = cancel;
+    job.state = 'rendering';
+    job.startedAt = Date.now();
+    const out = join(tmpdir(), `peapod-reel-${job.id}.mp4`);
+    try {
+      const composition = await selectComposition({ serveUrl: serveUrl!, id: REEL_COMPOSITION, inputProps: props, puppeteerInstance: browser! });
+      job.totalFrames = composition.durationInFrames;
+      await renderMedia({
+        composition,
+        serveUrl: serveUrl!,
+        codec: 'h264',
+        outputLocation: out,
+        inputProps: props,
+        puppeteerInstance: browser!,
+        overwrite: true,
+        cancelSignal,
+        onProgress: (p) => {
+          job.progress = Math.min(0.99, p.progress);
+          job.frames = p.renderedFrames;
+          job.etaSeconds = etaOf(job);
+        },
+      });
+      job.file = out;
+      job.progress = 1;
+      job.etaSeconds = 0;
+      job.state = 'done';
+      log('info', 'render reel job', { id: job.id, ms: Date.now() - job.startedAt! });
+    } catch (e) {
+      await rm(out, { force: true });
+      // Hủy do người dùng: DELETE đã đặt trạng thái trước khi dừng render.
+      if (isCancelled(job)) {
+        job.state = 'cancelled';
+      } else {
+        job.state = 'error';
+        job.error = 'render_failed';
+        log('error', 'render reel job failed', { id: job.id, error: (e as Error).message.slice(0, 300) });
+      }
+    } finally {
+      job.cancel = null;
+      job.finishedAt = Date.now();
+    }
+  } finally {
+    release();
+  }
+}
+
+function jobView(job: Job) {
+  return {
+    id: job.id,
+    state: job.state,
+    progress: Math.round(job.progress * 1000) / 1000,
+    frames: job.frames,
+    totalFrames: job.totalFrames,
+    etaSeconds: job.etaSeconds,
+    error: job.error,
+    elapsedMs: job.startedAt ? (job.finishedAt ?? Date.now()) - job.startedAt : 0,
+  };
+}
+
+// Dọn job cũ: xóa file và bản ghi sau khi giữ đủ thời gian để PeaPod tải.
+setInterval(() => {
+  const now = Date.now();
+  for (const [id, job] of jobs) {
+    const stale = (job.finishedAt && now - job.finishedAt > JOB_KEEP_MS) || now - job.createdAt > JOB_MAX_AGE_MS;
+    if (!stale) continue;
+    if (job.file) void rm(job.file, { force: true });
+    jobs.delete(id);
+  }
+}, 60_000).unref();
+
+const JOB_ID = /^[0-9a-f-]{36}$/;
+
 const server = createServer(async (req, res) => {
   const url = req.url ?? '/';
+  const jobMatch = /^\/jobs\/([0-9a-f-]{36})(\/video)?$/.exec(url);
+  if (jobMatch) {
+    if (!tokenOk(req.headers['x-render-token'] as string | undefined)) return json(res, 401, { error: 'unauthorized' });
+    const id = jobMatch[1]!;
+    if (!JOB_ID.test(id)) return json(res, 404, { error: 'not_found' });
+    const job = jobs.get(id);
+    if (!job) return json(res, 404, { error: 'not_found' });
+    if (req.method === 'GET' && jobMatch[2]) {
+      if (job.state !== 'done' || !job.file) return json(res, 409, { error: 'not_ready', state: job.state });
+      const mp4 = await readFile(job.file);
+      res.writeHead(200, { 'Content-Type': 'video/mp4', 'Content-Length': mp4.length });
+      return res.end(mp4);
+    }
+    if (req.method === 'GET' && !jobMatch[2]) return json(res, 200, jobView(job));
+    if (req.method === 'DELETE' && !jobMatch[2]) {
+      if (job.state === 'queued' || job.state === 'rendering') {
+        job.state = 'cancelled';
+        job.cancel?.();
+      } else if (job.state === 'finalizing') {
+        return json(res, 409, { error: 'finalizing' });
+      }
+      return json(res, 200, jobView(job));
+    }
+    return json(res, 405, { error: 'method_not_allowed' });
+  }
+  if (req.method === 'POST' && url === '/jobs/reel') {
+    if (!tokenOk(req.headers['x-render-token'] as string | undefined)) return json(res, 401, { error: 'unauthorized' });
+    if (!serveUrl || !browser) return json(res, 503, { error: 'starting' });
+    let input: unknown;
+    try {
+      input = JSON.parse(await readBody(req));
+    } catch (e) {
+      const tooLarge = (e as Error).message === 'body_too_large';
+      return json(res, tooLarge ? 413 : 400, { error: tooLarge ? 'body_too_large' : 'invalid_json' });
+    }
+    const check = cardSchema.safeParse(input);
+    if (!check.success) return json(res, 400, { error: 'invalid_input', fields: check.error.issues.map((i) => i.path.join('.')) });
+    const job: Job = {
+      id: randomUUID(), state: 'queued', progress: 0, frames: 0, totalFrames: 0, etaSeconds: null,
+      createdAt: Date.now(), startedAt: null, finishedAt: null, file: null, error: null, cancel: null,
+    };
+    jobs.set(job.id, job);
+    void runReelJob(job, check.data);
+    return json(res, 202, jobView(job));
+  }
   if (req.method === 'GET' && url === '/health') {
     return json(res, 200, { ok: true, ready: serveUrl !== null && browser !== null, active, queued: queue.length });
   }
