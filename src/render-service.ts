@@ -1,11 +1,13 @@
 // Dịch vụ render thẻ PeaPod qua HTTP. Chạy nền trên máy, PeaPod (worker) gọi khi cần thẻ.
 // Khởi động: đóng gói project một lần và mở một trình duyệt dùng chung. Mỗi yêu cầu chỉ render một khung hình.
 // Dùng: RENDER_TOKEN=<≥32 ký tự> npx tsx src/render-service.ts
-import { timingSafeEqual } from 'node:crypto';
+import { randomUUID, timingSafeEqual } from 'node:crypto';
 import { createServer, type IncomingMessage, type ServerResponse } from 'node:http';
-import { resolve } from 'node:path';
+import { readFile, rm } from 'node:fs/promises';
+import { tmpdir } from 'node:os';
+import { join, resolve } from 'node:path';
 import { bundle } from '@remotion/bundler';
-import { openBrowser, renderStill, selectComposition, type HeadlessBrowser } from '@remotion/renderer';
+import { openBrowser, renderMedia, renderStill, selectComposition, type HeadlessBrowser } from '@remotion/renderer';
 import { cardSchema } from './schema.ts';
 
 const HOST = process.env.RENDER_HOST ?? '0.0.0.0';
@@ -14,6 +16,7 @@ const TOKEN = process.env.RENDER_TOKEN ?? '';
 const MAX_CONCURRENT = Math.max(1, Number(process.env.RENDER_CONCURRENCY ?? 2));
 const MAX_BODY_BYTES = 64 * 1024;
 const COMPOSITION = 'PeaPodCard';
+const REEL_COMPOSITION = 'PeaPodReel';
 
 if (TOKEN.length < 32) {
   console.error('RENDER_TOKEN phải có ít nhất 32 ký tự.');
@@ -96,6 +99,28 @@ async function renderCard(input: unknown): Promise<Buffer> {
   }
 }
 
+// Video 9:16 (H.264 MP4). Ghi ra file tạm rồi đọc lại, vì renderMedia không trả về buffer.
+async function renderReel(input: unknown): Promise<Buffer> {
+  const props = cardSchema.parse(input);
+  await acquire();
+  const out = join(tmpdir(), `peapod-reel-${randomUUID()}.mp4`);
+  try {
+    const composition = await selectComposition({ serveUrl: serveUrl!, id: REEL_COMPOSITION, inputProps: props, puppeteerInstance: browser! });
+    await renderMedia({
+      composition,
+      serveUrl: serveUrl!,
+      codec: 'h264',
+      outputLocation: out,
+      inputProps: props,
+      puppeteerInstance: browser!,
+    });
+    return await readFile(out);
+  } finally {
+    await rm(out, { force: true });
+    release();
+  }
+}
+
 const server = createServer(async (req, res) => {
   const url = req.url ?? '/';
   if (req.method === 'GET' && url === '/health') {
@@ -129,6 +154,29 @@ const server = createServer(async (req, res) => {
       return res.end(png);
     } catch (e) {
       log('error', 'render card failed', { ms: Date.now() - started, error: (e as Error).message.slice(0, 300) });
+      return json(res, 500, { error: 'render_failed' });
+    }
+  }
+  if (req.method === 'POST' && url === '/render/reel') {
+    if (!tokenOk(req.headers['x-render-token'] as string | undefined)) return json(res, 401, { error: 'unauthorized' });
+    if (!serveUrl || !browser) return json(res, 503, { error: 'starting' });
+    let input: unknown;
+    try {
+      input = JSON.parse(await readBody(req));
+    } catch (e) {
+      const tooLarge = (e as Error).message === 'body_too_large';
+      return json(res, tooLarge ? 413 : 400, { error: tooLarge ? 'body_too_large' : 'invalid_json' });
+    }
+    const check = cardSchema.safeParse(input);
+    if (!check.success) return json(res, 400, { error: 'invalid_input', fields: check.error.issues.map((i) => i.path.join('.')) });
+    const started = Date.now();
+    try {
+      const mp4 = await renderReel(check.data);
+      log('info', 'render reel', { ms: Date.now() - started, market: check.data.market, bytes: mp4.length });
+      res.writeHead(200, { 'Content-Type': 'video/mp4', 'Content-Length': mp4.length });
+      return res.end(mp4);
+    } catch (e) {
+      log('error', 'render reel failed', { ms: Date.now() - started, error: (e as Error).message.slice(0, 300) });
       return json(res, 500, { error: 'render_failed' });
     }
   }
