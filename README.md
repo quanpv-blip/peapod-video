@@ -58,7 +58,7 @@ Studio dùng để xem trước và chỉnh composition, không cần cho dịch
 ```powershell
 npm run studio
 ```
-Cổng mặc định của studio là 3000; dịch vụ render dùng 4100, không xung đột.
+Studio chạy cổng 3100 (tránh trùng project Remotion khác ở 3000). Dịch vụ render dùng 4100. Tab "Biên tập video" của PeaPod nhúng studio này qua REMOTION_STUDIO_URL=http://<IP máy>:3100; máy chạy PeaPod phải truy cập được cổng 3100.
 
 ## Lưu ý
 - Mỗi lần render dùng một Chromium. `RENDER_CONCURRENCY` giới hạn số lần render cùng lúc; yêu cầu thừa được xếp hàng.

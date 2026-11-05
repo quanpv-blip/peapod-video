@@ -5,7 +5,7 @@
   "description": "Thẻ ảnh và video PeaPod dựng bằng Remotion. Được gọi từ worker PeaPod qua scripts/render.ts.",
   "type": "module",
   "scripts": {
-    "studio": "remotion studio src/index.ts",
+    "studio": "remotion studio src/index.ts --port 3100 --no-open",
     "typecheck": "tsc --noEmit",
     "render:card": "tsx scripts/render.ts card",
     "serve": "tsx --env-file=.env src/render-service.ts"
