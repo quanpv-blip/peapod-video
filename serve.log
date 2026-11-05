@@ -1,0 +1,11 @@
+
+> peapod-video@0.1.0 serve
+> tsx --env-file=.env src/render-service.ts
+
+{"level":"info","msg":"bundle ready","ms":5058}
+{"level":"info","msg":"browser ready","ms":5161}
+{"level":"info","msg":"render service listening","host":"0.0.0.0","port":4100,"concurrency":2}
+{"level":"info","msg":"render reel job","id":"cffad36c-60ae-4736-bb2f-8060128d69c0","ms":10115}
+{"level":"info","msg":"render reel job","id":"4da3f949-f9c7-4b5a-a315-9ace276ad67f","ms":10556}
+{"level":"info","msg":"render reel job","id":"d96f317b-aeb7-4754-a08d-a12917a50c54","ms":10868}
+{"level":"info","msg":"render reel job","id":"24c794e6-fa5a-4910-bc51-bc09857e0ad5","ms":10692}
