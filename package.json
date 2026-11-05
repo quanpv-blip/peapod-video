@@ -1,0 +1,29 @@
+{
+  "name": "peapod-video",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Thẻ ảnh và video PeaPod dựng bằng Remotion. Được gọi từ worker PeaPod qua scripts/render.ts.",
+  "type": "module",
+  "scripts": {
+    "studio": "remotion studio src/index.ts",
+    "typecheck": "tsc --noEmit",
+    "render:card": "tsx scripts/render.ts card",
+    "serve": "tsx --env-file=.env src/render-service.ts"
+  },
+  "dependencies": {
+    "@remotion/bundler": "4.0.540",
+    "@remotion/fonts": "4.0.540",
+    "@remotion/google-fonts": "4.0.540",
+    "@remotion/renderer": "4.0.540",
+    "react": "19.3.1",
+    "react-dom": "19.3.1",
+    "remotion": "4.0.540",
+    "zod": "4.6.7"
+  },
+  "devDependencies": {
+    "@types/node": "^20.12.14",
+    "@types/react": "19.3.0",
+    "tsx": "4.20.6",
+    "typescript": "5.9.3"
+  }
+}
