@@ -1,0 +1,195 @@
+
+> peapod-video@0.1.0 studio
+> remotion studio src/index.ts --port 3100 --no-open
+
+Server ready - Local: [4mhttp://localhost:3100[24m, Network: [4mhttp://192.168.1.145:3100[24m
+Building...
+Built in 803ms
+Building...
+Built in 420ms
+node:internal/modules/cjs/loader:1575
+  throw err;
+  ^
+
+Error: Cannot find module 'D:\PROJECT\oasis\peapod-video'
+    at Module._resolveFilename (node:internal/modules/cjs/loader:1571:15)
+    at wrapResolveFilename (node:internal/modules/cjs/loader:1125:27)
+    at defaultResolveImplForCJSLoading (node:internal/modules/cjs/loader:1149:10)
+    at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1176:12)
+    at node:internal/modules/cjs/loader:1348:5
+    at Module._load (node:electron/js2c/node_init:2:18263)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:268:19)
+    at Module.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:169:5)
+    at node:internal/main/run_main_module:33:47 {
+  code: 'MODULE_NOT_FOUND',
+  requireStack: []
+}
+
+Node.js v24.22.1
+[31mProcess exited with code 1[39m
+[94msrc\Root.tsx:1[39m Created composition "NewComposition"
+[90mTip: Ctrl+Z in Studio to undo[39m
+Building...
+Built in 297ms
+[94msrc\NewComposition.tsx:7[39m Added <Solid>
+Building...
+Built in 205ms
+[94msrc\NewComposition.tsx:7[39m [9m[38;2;255;85;85mstyle={{translate: '0px 0px'}}[39m[29m
+[94msrc\PeaPodReel.tsx:70[39m Added <Interactive.Div>
+Building...
+Built in 194ms
+[94msrc\PeaPodReel.tsx:70[39m [38;2;166;226;46mchildren[39m[38;2;249;38;114m=[39m{Text → [38;2;230;219;116m'dsafdafdsaffffffff'[39m}
+Building...
+Built in 197ms
+[90m╭─  npx.cmd --yes --loglevel=error skills@1.7.0 add remotion-dev/skills@remotion-markup --yes[39m
+(node:24040) [DEP0190] DeprecationWarning: Passing args to a child process with shell option true can lead to security vulnerabilities, as the arguments are not escaped, only concatenated.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+[90m│[39m 
+[90m│[39m │
+[90m│[39m ●  [46m[30m[1m claude-code_2-1-318_agent [22m[39m[49m Agent detected — installing non-interactively
+[90m│[39m [?25l
+[90m│[39m │
+[90m│[39m ◇  Source: https://github.com/remotion-dev/skills.git [2m@[22m[36mremotion-markup[39m
+[90m│[39m [?25h
+[90m│[39m [?25l
+[90m│[39m │
+[90m│[39m ◒  Fetching skills…
+[90m│[39m [1G[J
+[90m│[39m ◐  Cloning repository…
+[90m│[39m [1G
+[90m│[39m [J
+[90m│[39m ◓  Cloning repository…
+[90m│[39m [1G
+[90m│[39m [J
+[90m│[39m ◑  Cloning repository…
+[90m│[39m [1G[J
+[90m│[39m ◒  Cloning repository…
+[90m│[39m [1G
+[90m│[39m [J◐  Cloning repository…
+[90m│[39m [1G[J
+[90m│[39m ◓  Cloning repository…
+[90m│[39m [1G[J◑  Cloning repository…
+[90m│[39m [1G
+[90m│[39m [J◒  Cloning repository….
+[90m│[39m [1G[J
+[90m│[39m ◐  Cloning repository….
+[90m│[39m [1G[J
+[90m│[39m ◓  Cloning repository….
+[90m│[39m [1G[J
+[90m│[39m ◑  Cloning repository….
+[90m│[39m [1G[J
+[90m│[39m ◒  Cloning repository….
+[90m│[39m [1G
+[90m│[39m [J
+[90m│[39m ◐  Cloning repository….
+[90m│[39m [1G
+[90m│[39m [J◓  Cloning repository….
+[90m│[39m [1G[J
+[90m│[39m ◑  Cloning repository….
+[90m│[39m [1G[J◒  Cloning repository…..
+[90m│[39m [1G[J
+[90m│[39m ◐  Cloning repository…..
+[90m│[39m [1G[J
+[90m│[39m ◓  Cloning repository…..
+[90m│[39m [1G[J
+[90m│[39m ◑  Cloning repository…..
+[90m│[39m [1G[J◇  Repository cloned
+[90m│[39m [?25h
+[90m│[39m [?25l│
+[90m│[39m [1G[J◇  Found [32m13[39m skills
+[90m│[39m [?25h
+[90m│[39m │
+[90m│[39m ●  Selected 1 skill: [36mremotion-markup[39m
+[90m│[39m [?25l│
+[90m│[39m [1G[J◇  79 agents
+[90m│[39m [?25h│
+[90m│[39m ●  Installing to: [36mAntigravity[39m, [36mClaude Code[39m, [36mCodex[39m, [36mGemini CLI[39m, [36mGitHub Copilot[39m, [36mOpenCode[39m
+[90m│[39m 
+[90m│[39m │
+[90m│[39m ◇  Installation Summary ───────────────────────────────────────────────────────╮
+[90m│[39m │                                                                              │
+[90m│[39m │  [36m.\.agents\skills\remotion-markup[39m                                            │
+[90m│[39m │    [32muniversal:[39m Antigravity, Codex, Gemini CLI, GitHub Copilot, OpenCode +15   │
+[90m│[39m │  more                                                                        │
+[90m│[39m │    [2msymlink →[22m Claude Code                                                     │
+[90m│[39m │                                                                              │
+[90m│[39m ├──────────────────────────────────────────────────────────────────────────────╯
+[90m│[39m [?25l│
+[90m│[39m [1G[J
+[90m│[39m ◒  Installing skills…
+[90m│[39m [1G[J
+[90m│[39m ◐  Installing skills…
+[90m│[39m [1G[J
+[90m│[39m ◓  Installing skills…
+[90m│[39m [1G
+[90m│[39m [J◑  Installing skills…
+[90m│[39m [1G[J
+[90m│[39m ◒  Installing skills…
+[90m│[39m [1G[J◇  Installation complete
+[90m│[39m [?25h
+[90m│[39m │
+[90m│[39m ◇  [32mInstalled 1 skill[39m ──────────────────────────────────────────────────────────╮
+[90m│[39m │                                                                              │
+[90m│[39m │  [32m✓[39m .\.agents\skills\remotion-markup                                          │
+[90m│[39m │    [32muniversal:[39m Antigravity, Codex, Gemini CLI, GitHub Copilot, OpenCode +15   │
+[90m│[39m │  more                                                                        │
+[90m│[39m │    [2msymlinked:[22m Claude Code                                                    │
+[90m│[39m │                                                                              │
+[90m│[39m ├──────────────────────────────────────────────────────────────────────────────╯
+[90m│[39m │
+[90m│[39m └  [32mDone![39m[2m  Review skills before use; they run with full agent permissions.[22m
+[90m╰─ [39m Done in 7148ms
+Building...
+Built in 388ms
+[31m[31mAn error occurred in the Studio:[39m[31m[39m
+[31m[41m[37m TypeError [39m[31m[49m Cannot read properties of undefined (reading 'writeText')[39m
+[31m[39m
+[31mat [4m./node_modules/@remotion/studio/dist/esm/index-6k01te75.mjs:1094[24m[39m
+[31m[90m1091[39m[31m │ [90m// src/helpers/copy-text.ts[39m[31m[39m
+[31m[90m1092[39m[31m │ [90mvar copyText = (text) => {[39m[31m[39m
+[31m[90m1093[39m[31m │ [90m  if (typeof text === "string") {[39m[31m[39m
+[31m1094 │     return navigator.clipboard.writeText(text);[39m
+[31m[90m1095[39m[31m │ [90m  }[39m[31m[39m
+[31m[90m1096[39m[31m │ [90m  return navigator.clipboard.write([[39m[31m[39m
+[31m[90m1097[39m[31m │ [90m    new ClipboardItem({[39m[31m[39m
+
+[31mCould not open index-k22tz863.mjs in the editor.[39m
+
+[31mWhen running on Windows, file names are checked against a whitelist to protect against remote code execution attacks. File names may consist only of alphanumeric characters (all languages), periods, dashes, slashes, and underscores.[39m
+
+
+[31mCould not open index-6k01te75.mjs in the editor.[39m
+
+[31mWhen running on Windows, file names are checked against a whitelist to protect against remote code execution attacks. File names may consist only of alphanumeric characters (all languages), periods, dashes, slashes, and underscores.[39m
+
+
+[31mCould not open index-6k01te75.mjs in the editor.[39m
+
+[31mWhen running on Windows, file names are checked against a whitelist to protect against remote code execution attacks. File names may consist only of alphanumeric characters (all languages), periods, dashes, slashes, and underscores.[39m
+
+
+[31mCould not open index-6k01te75.mjs in the editor.[39m
+
+[31mWhen running on Windows, file names are checked against a whitelist to protect against remote code execution attacks. File names may consist only of alphanumeric characters (all languages), periods, dashes, slashes, and underscores.[39m
+
+
+[31mCould not open index-6k01te75.mjs in the editor.[39m
+
+[31mWhen running on Windows, file names are checked against a whitelist to protect against remote code execution attacks. File names may consist only of alphanumeric characters (all languages), periods, dashes, slashes, and underscores.[39m
+
+[94msrc\PeaPodReel.tsx:70[39m [38;2;166;226;46mfreeze[39m[38;2;249;38;114m=[39m{ → [38;2;174;129;255m69[39m}
+[94msrc\PeaPodReel.tsx:70[39m [38;2;166;226;46mfreeze[39m[38;2;249;38;114m=[39m{[38;2;174;129;255m69[39m → undefined}
+[31m[31mAn error occurred in the Studio:[39m[31m[39m
+[31m[41m[37m TypeError [39m[31m[49m Cannot read properties of undefined (reading 'writeText')[39m
+[31m[39m
+[31mat [4m./node_modules/@remotion/studio/dist/esm/index-6k01te75.mjs:1005:3[24m[39m
+[31m[90m1002[39m[31m │ [90m    restartRequired,[39m[31m[39m
+[31m[90m1003[39m[31m │ [90m    subscribeToEvent[39m[31m[39m
+[31m[90m1004[39m[31m │ [90m  };[39m[31m[39m
+[31m1005 │ }, [configFileChangeRevision, restartRequired, state, subscribeToEvent]);[39m
+[31m[90m1006[39m[31m │ [90mreturn /* @__PURE__ */ jsx2(StudioServerConnectionCtx.Provider, {[39m[31m[39m
+[31m[90m1007[39m[31m │ [90m  value: context,[39m[31m[39m
+[31m[90m1008[39m[31m │ [90m  children: /* @__PURE__ */ jsx2(Internals2.DefaultPremountContext.Provider, {[39m[31m[39m
+Building...
+Built in 88ms
+To restart - Local: [4mhttp://localhost:3100[24m, Network: [4mhttp://192.168.1.145:3100[24m
