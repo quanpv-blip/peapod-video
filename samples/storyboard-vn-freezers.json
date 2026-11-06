@@ -1,0 +1,47 @@
+{
+  "facts": [
+    { "id": "f-temp50", "label": "Nhiệt độ tủ đông ở một cửa hàng ICA (Stockholm)", "value": 50, "raw": "50", "unit": "độ C", "quote": "Toàn bộ tủ đông của chúng tôi đều tăng nhiệt lên 50 độ C" },
+    { "id": "f-supervalu", "label": "Cửa hàng SuperValu bị ảnh hưởng (Ireland)", "value": 13, "raw": "13", "unit": "cửa hàng", "quote": "Tại Ireland, nhà bán buôn Musgrave nói sự cố tác động đến 13 cửa hàng SuperValu, buộc họ phải thu hồi một số sản phẩm đông và bảo quản lạnh." },
+    { "id": "f-carrefour", "label": "Cửa hàng Carrefour tại Bỉ bị ảnh hưởng", "value": 15, "raw": "15", "unit": "cửa hàng", "quote": "Carrefour, chuỗi bán lẻ chịu ảnh hưởng nặng trong cuộc tấn công tại Pháp, lần này cho biết 15 trong số 700 cửa hàng của họ tại Bỉ bị ảnh hưởng." },
+    { "id": "f-carrefour-total", "label": "Tổng số cửa hàng Carrefour tại Bỉ", "value": 700, "raw": "700", "unit": "cửa hàng", "quote": "Carrefour, chuỗi bán lẻ chịu ảnh hưởng nặng trong cuộc tấn công tại Pháp, lần này cho biết 15 trong số 700 cửa hàng của họ tại Bỉ bị ảnh hưởng." },
+    { "id": "f-colruyt", "label": "Địa điểm Colruyt có tủ lạnh bị điều khiển từ xa", "value": 5, "raw": "5", "unit": "địa điểm", "quote": "nói hệ thống tủ lạnh tại 5 địa điểm đã bị điều khiển từ xa" },
+    { "id": "f-loss", "label": "Giá trị thịt bị hỏng ở một cửa hàng tại Antwerp", "value": 15000, "raw": "15.000", "unit": "euro", "quote": "Ông ước tính sự cố khiến lượng thịt trị giá 15.000 euro (430 triệu đồng) bị hỏng." }
+  ],
+  "scenes": [
+    { "type": "hook", "headline": "Tủ đông siêu thị bị hack lên 50 độ C", "sub": "Một đêm, hàng loạt siêu thị châu Âu", "say": ["Tin tặc tăng nhiệt tủ đông lên 50 độ C ở hàng loạt siêu thị châu Âu, chỉ trong một đêm."] },
+    {
+      "type": "cards",
+      "chapter": { "title": "Thiệt hại", "accent": "lan khắp châu Âu", "icon": "globe" },
+      "items": [
+        { "factId": "f-supervalu", "label": "SuperValu, Ireland" },
+        { "factId": "f-carrefour", "label": "Carrefour, Bỉ" },
+        { "factId": "f-colruyt", "label": "Colruyt, điều khiển từ xa" }
+      ],
+      "say": ["Ireland: 13 cửa hàng SuperValu.", "Bỉ: 15 trong 700 cửa hàng Carrefour.", "Colruyt: 5 địa điểm bị điều khiển từ xa."]
+    },
+    {
+      "type": "timeline",
+      "chapter": { "title": "Diễn ra", "accent": "trong đêm", "icon": "clock" },
+      "items": [
+        { "when": "Giữa tháng 10", "text": "Siêu thị ở Pháp bị tấn công trước" },
+        { "when": "2h, 2/11", "text": "Tủ đông ở Stockholm nóng lên" },
+        { "when": "3h30", "text": "Chủ cửa hàng ở Antwerp bị gọi dậy" }
+      ],
+      "say": ["Giữa tháng 10, Pháp bị tấn công trước.", "2 giờ sáng ngày 2/11, tủ đông ở Stockholm nóng lên.", "3 giờ 30, chủ cửa hàng ở Antwerp bị gọi dậy."]
+    },
+    { "type": "stat", "chapter": { "title": "Tủ đông", "accent": "thành lò sưởi", "icon": "thermometer" }, "factId": "f-loss", "label": "tiền thịt hỏng ở một cửa hàng", "context": "Antwerp, Bỉ", "say": ["Một cửa hàng thịt ở Antwerp mất 15.000 euro tiền hàng."] },
+    {
+      "type": "checklist",
+      "chapter": { "title": "Bán lẻ", "accent": "dễ bị tấn công", "icon": "shield" },
+      "items": [{ "text": "Điều khiển làm lạnh" }, { "text": "Quản lý tòa nhà" }, { "text": "Cửa ra vào" }, { "text": "Máy thanh toán" }],
+      "say": ["Bán lẻ có bốn điểm yếu:", "điều khiển làm lạnh,", "quản lý tòa nhà,", "cửa ra vào,", "và máy thanh toán."]
+    },
+    {
+      "type": "recap",
+      "chapter": { "title": "Lưu lại", "icon": "document" },
+      "items": [{ "text": "Tủ đông bị điều khiển từ xa" }, { "text": "Nhiều nước bị ảnh hưởng" }, { "text": "Thiết bị nối mạng là điểm yếu" }],
+      "say": ["Lưu lại:", "tủ đông bị điều khiển từ xa,", "nhiều nước bị ảnh hưởng,", "thiết bị nối mạng là điểm yếu."]
+    },
+    { "type": "cta", "question": "Doanh nghiệp bạn có thiết bị nào điều khiển qua Internet?", "say": ["Doanh nghiệp bạn có thiết bị nào điều khiển qua Internet? Bình luận cho chúng tôi nhé."] }
+  ]
+}

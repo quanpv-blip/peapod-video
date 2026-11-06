@@ -63,4 +63,4 @@ Studio chạy cổng 3100 (tránh trùng project Remotion khác ở 3000). Dịc
 ## Lưu ý
 - Mỗi lần render dùng một Chromium. `RENDER_CONCURRENCY` giới hạn số lần render cùng lúc; yêu cầu thừa được xếp hàng.
 - Dịch vụ lắng nghe trên `0.0.0.0` để container PeaPod gọi được qua `host.docker.internal`. Token là lớp bảo vệ duy nhất, nên giữ bí mật và không mở cổng này ra Internet.
-- Giấy phép Remotion: PeaPod là tổ chức có hơn 3 nhân viên, cần Company License cho việc dùng thương mại (xem `LICENSE.md` của repo Remotion). Đây là quyết định D-08 đang chờ.
+- Giấy phép Remotion (D-08, chốt 2026-11-06): PeaPod là dự án cá nhân, 1–2 người dùng, nên thuộc diện Free License (cá nhân hoặc tổ chức tối đa 3 người, xem `LICENSE.md` của repo Remotion). Phải xét lại nếu vượt 3 người hoặc dự án được giao cho một công ty.
