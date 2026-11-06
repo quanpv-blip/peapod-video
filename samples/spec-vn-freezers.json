@@ -1,0 +1,395 @@
+{
+  "version": 1,
+  "id": "sample-vn-freezers",
+  "market": "VN",
+  "language": "vi",
+  "format": "reel-9x16",
+  "theme": {
+    "palette": "ember",
+    "background": "grid"
+  },
+  "source": {
+    "outlet": "VnExpress (dẫn Reuters)",
+    "title": "Hacker tăng nhiệt tủ lạnh đến 50 độ C tại hàng loạt siêu thị châu Âu",
+    "url": "https://vnexpress.net/hacker-tang-nhiet-tu-lanh-den-50-do-c-tai-hang-loat-sieu-thi-chau-au-5139939.html",
+    "publishedAt": "2026-11-03",
+    "author": "Châu An"
+  },
+  "facts": [
+    {
+      "id": "f-date",
+      "kind": "date",
+      "label": "Ngày xảy ra đợt tấn công",
+      "iso": "2026-11-02",
+      "raw": "2/11",
+      "evidence": {
+        "url": "https://vnexpress.net/hacker-tang-nhiet-tu-lanh-den-50-do-c-tai-hang-loat-sieu-thi-chau-au-5139939.html",
+        "quote": "Tương tự chiến dịch nhắm vào siêu thị ở Pháp giữa tháng 10, đợt tấn công ngày 2/11 ảnh hưởng đến chuỗi siêu thị Ahold Delhaize và Colruyt ở Bỉ, Luxembourg và hai nhà bán lẻ thực phẩm Thụy Điển là ICA và Coop.",
+        "paragraph": 1
+      }
+    },
+    {
+      "id": "f-temp50",
+      "kind": "number",
+      "label": "Nhiệt độ tủ đông ở một cửa hàng ICA (Stockholm)",
+      "value": 50,
+      "raw": "50",
+      "unit": "độ C",
+      "evidence": {
+        "url": "https://vnexpress.net/hacker-tang-nhiet-tu-lanh-den-50-do-c-tai-hang-loat-sieu-thi-chau-au-5139939.html",
+        "quote": "Toàn bộ tủ đông của chúng tôi đều tăng nhiệt lên 50 độ C",
+        "paragraph": 3
+      }
+    },
+    {
+      "id": "f-supervalu",
+      "kind": "number",
+      "label": "Cửa hàng SuperValu bị ảnh hưởng (Ireland)",
+      "value": 13,
+      "raw": "13",
+      "unit": "cửa hàng",
+      "evidence": {
+        "url": "https://vnexpress.net/hacker-tang-nhiet-tu-lanh-den-50-do-c-tai-hang-loat-sieu-thi-chau-au-5139939.html",
+        "quote": "Tại Ireland, nhà bán buôn Musgrave nói sự cố tác động đến 13 cửa hàng SuperValu, buộc họ phải thu hồi một số sản phẩm đông và bảo quản lạnh.",
+        "paragraph": 2
+      }
+    },
+    {
+      "id": "f-carrefour",
+      "kind": "number",
+      "label": "Cửa hàng Carrefour tại Bỉ bị ảnh hưởng",
+      "value": 15,
+      "raw": "15",
+      "unit": "cửa hàng",
+      "evidence": {
+        "url": "https://vnexpress.net/hacker-tang-nhiet-tu-lanh-den-50-do-c-tai-hang-loat-sieu-thi-chau-au-5139939.html",
+        "quote": "Carrefour, chuỗi bán lẻ chịu ảnh hưởng nặng trong cuộc tấn công tại Pháp, lần này cho biết 15 trong số 700 cửa hàng của họ tại Bỉ bị ảnh hưởng.",
+        "paragraph": 2
+      }
+    },
+    {
+      "id": "f-carrefour-total",
+      "kind": "number",
+      "label": "Tổng số cửa hàng Carrefour tại Bỉ",
+      "value": 700,
+      "raw": "700",
+      "unit": "cửa hàng",
+      "evidence": {
+        "url": "https://vnexpress.net/hacker-tang-nhiet-tu-lanh-den-50-do-c-tai-hang-loat-sieu-thi-chau-au-5139939.html",
+        "quote": "Carrefour, chuỗi bán lẻ chịu ảnh hưởng nặng trong cuộc tấn công tại Pháp, lần này cho biết 15 trong số 700 cửa hàng của họ tại Bỉ bị ảnh hưởng.",
+        "paragraph": 2
+      }
+    },
+    {
+      "id": "f-colruyt",
+      "kind": "number",
+      "label": "Địa điểm Colruyt có tủ lạnh bị điều khiển từ xa",
+      "value": 5,
+      "raw": "5",
+      "unit": "địa điểm",
+      "evidence": {
+        "url": "https://vnexpress.net/hacker-tang-nhiet-tu-lanh-den-50-do-c-tai-hang-loat-sieu-thi-chau-au-5139939.html",
+        "quote": "nói hệ thống tủ lạnh tại 5 địa điểm đã bị điều khiển từ xa",
+        "paragraph": 2
+      }
+    },
+    {
+      "id": "f-loss",
+      "kind": "number",
+      "label": "Giá trị thịt bị hỏng ở một cửa hàng tại Antwerp",
+      "value": 15000,
+      "raw": "15.000",
+      "unit": "euro",
+      "evidence": {
+        "url": "https://vnexpress.net/hacker-tang-nhiet-tu-lanh-den-50-do-c-tai-hang-loat-sieu-thi-chau-au-5139939.html",
+        "quote": "Ông ước tính sự cố khiến lượng thịt trị giá 15.000 euro (430 triệu đồng) bị hỏng.",
+        "paragraph": 5
+      }
+    },
+    {
+      "id": "f-quote",
+      "kind": "quote",
+      "text": "Họ tấn công hệ thống ghi nhận nhiệt độ và có thể lập trình lại hệ thống từ xa",
+      "speaker": "Luc De Laet, chủ chuỗi cửa hàng thịt tại Bỉ",
+      "evidence": {
+        "url": "https://vnexpress.net/hacker-tang-nhiet-tu-lanh-den-50-do-c-tai-hang-loat-sieu-thi-chau-au-5139939.html",
+        "quote": "\"Thật đáng sợ. Họ tấn công hệ thống ghi nhận nhiệt độ và có thể lập trình lại hệ thống từ xa\", ông nói",
+        "paragraph": 6
+      }
+    },
+    {
+      "id": "f-noclaim",
+      "kind": "claim",
+      "text": "Chưa có cá nhân hay tổ chức nào nhận trách nhiệm.",
+      "evidence": {
+        "url": "https://vnexpress.net/hacker-tang-nhiet-tu-lanh-den-50-do-c-tai-hang-loat-sieu-thi-chau-au-5139939.html",
+        "quote": "Hiện chưa có cá nhân hay tổ chức nào nhận trách nhiệm.",
+        "paragraph": 15
+      }
+    }
+  ],
+  "scenes": [
+    {
+      "id": "s-hook",
+      "kind": "hook",
+      "headline": "Tủ đông siêu thị bị hack lên 50 độ C",
+      "sub": "Một đêm, hàng loạt siêu thị châu Âu",
+      "icon": "thermometer",
+      "narration": {
+        "text": "Tin tặc tăng nhiệt tủ đông lên 50 độ C ở hàng loạt siêu thị châu Âu, chỉ trong một đêm."
+      }
+    },
+    {
+      "id": "s-who",
+      "kind": "concept",
+      "eyebrow": "01 — AI BỊ NHẮM",
+      "heading": {
+        "title": "Một đêm,",
+        "accent": "nhiều chuỗi bán lẻ",
+        "icon": "building"
+      },
+      "chips": [
+        {
+          "text": "Ahold Delhaize"
+        },
+        {
+          "text": "Colruyt"
+        },
+        {
+          "text": "ICA"
+        },
+        {
+          "text": "Coop"
+        },
+        {
+          "text": "IKEA"
+        }
+      ],
+      "result": "= cùng một đợt tấn công ngày 2/11",
+      "icon": "bolt",
+      "narration": {
+        "text": "Đợt tấn công 2/11 nhắm vào | Ahold Delhaize, | Colruyt, | ICA, | Coop, | cả IKEA. | Cùng một đợt."
+      }
+    },
+    {
+      "id": "s-scale",
+      "kind": "cards",
+      "eyebrow": "02 — QUY MÔ",
+      "heading": {
+        "title": "Thiệt hại",
+        "accent": "lan khắp châu Âu",
+        "icon": "globe"
+      },
+      "items": [
+        {
+          "factId": "f-supervalu",
+          "label": "cửa hàng SuperValu (Ireland)",
+          "tone": "accent"
+        },
+        {
+          "factId": "f-carrefour",
+          "label": "trong 700 cửa hàng Carrefour (Bỉ)",
+          "tone": "gold"
+        },
+        {
+          "factId": "f-colruyt",
+          "label": "địa điểm Colruyt bị điều khiển từ xa",
+          "tone": "violet"
+        }
+      ],
+      "display": "full",
+      "note": "Theo VnExpress, dẫn Reuters",
+      "narration": {
+        "text": "Ireland: 13 cửa hàng SuperValu. | Bỉ: 15 trong 700 cửa hàng Carrefour. | Colruyt: 5 địa điểm bị điều khiển từ xa."
+      }
+    },
+    {
+      "id": "s-night",
+      "kind": "timeline",
+      "eyebrow": "03 — DIỄN BIẾN",
+      "heading": {
+        "title": "Diễn ra",
+        "accent": "trong đêm",
+        "icon": "clock"
+      },
+      "events": [
+        {
+          "when": "Giữa tháng 10",
+          "label": "Chiến dịch tương tự nhắm vào siêu thị ở Pháp"
+        },
+        {
+          "when": "2/11 · 2h",
+          "label": "Tủ đông một cửa hàng ICA ở Stockholm tăng nhiệt",
+          "factId": "f-date"
+        },
+        {
+          "when": "3h30",
+          "label": "Chủ cửa hàng thịt ở Antwerp bị đánh thức"
+        },
+        {
+          "when": "Vài giờ sau",
+          "label": "Sự cố mới được phát hiện"
+        }
+      ],
+      "narration": {
+        "text": "Giữa tháng 10, Pháp bị tấn công trước. | 2h ngày 2/11, tủ đông ở Stockholm nóng lên. | 3h30, chủ cửa hàng ở Antwerp bị gọi dậy. | Vài giờ sau mới phát hiện."
+      }
+    },
+    {
+      "id": "s-temp",
+      "kind": "stat",
+      "eyebrow": "04 — CON SỐ",
+      "heading": {
+        "title": "Tủ đông",
+        "accent": "thành lò sưởi",
+        "icon": "thermometer"
+      },
+      "factId": "f-temp50",
+      "label": "Tủ đông một cửa hàng ICA ở Stockholm",
+      "display": "full",
+      "annotation": "circle",
+      "narration": {
+        "text": "Ở Stockholm, cả dãy tủ đông lên tới 50 độ C."
+      }
+    },
+    {
+      "id": "s-loss",
+      "kind": "stat",
+      "eyebrow": "04 — CON SỐ",
+      "heading": {
+        "title": "Tủ đông",
+        "accent": "thành lò sưởi",
+        "icon": "thermometer"
+      },
+      "factId": "f-loss",
+      "label": "Thịt bị hỏng ở một cửa hàng tại Antwerp",
+      "display": "full",
+      "annotation": "underline",
+      "context": "Ước tính của chủ cửa hàng",
+      "narration": {
+        "text": "Một cửa hàng thịt ở Antwerp mất 15.000 euro tiền hàng."
+      }
+    },
+    {
+      "id": "s-quote",
+      "kind": "quote",
+      "eyebrow": "05 — NGƯỜI TRONG CUỘC",
+      "heading": {
+        "title": "Bị điều khiển",
+        "accent": "từ xa",
+        "icon": "link"
+      },
+      "factId": "f-quote",
+      "attribution": "Luc De Laet, chủ chuỗi cửa hàng thịt tại Bỉ",
+      "highlight": [
+        "lập trình lại hệ thống từ xa"
+      ],
+      "narration": {
+        "text": "Chủ cửa hàng nói: hệ thống nhiệt độ bị lập trình lại từ xa."
+      }
+    },
+    {
+      "id": "s-why",
+      "kind": "checklist",
+      "eyebrow": "06 — VÌ SAO BÁN LẺ",
+      "heading": {
+        "title": "Bán lẻ",
+        "accent": "dễ bị tấn công",
+        "icon": "shield"
+      },
+      "items": [
+        {
+          "text": "Bộ điều khiển thiết bị làm lạnh",
+          "icon": "thermometer"
+        },
+        {
+          "text": "Hệ thống quản lý tòa nhà",
+          "icon": "building"
+        },
+        {
+          "text": "Bảng điều khiển ra vào",
+          "icon": "lock"
+        },
+        {
+          "text": "Thiết bị thanh toán tại quầy",
+          "icon": "money"
+        }
+      ],
+      "note": "Theo Tom Hegel, SentinelOne",
+      "narration": {
+        "text": "Bán lẻ có bốn điểm yếu: | điều khiển làm lạnh, | quản lý tòa nhà, | cửa ra vào, | và máy thanh toán."
+      }
+    },
+    {
+      "id": "s-unknown",
+      "kind": "alert",
+      "level": "critical",
+      "factId": "f-noclaim",
+      "eyebrow": "07 — CHƯA CÓ LỜI GIẢI",
+      "heading": {
+        "title": "Ai đứng sau?",
+        "icon": "alert"
+      },
+      "title": "Chưa ai nhận trách nhiệm",
+      "points": [
+        "Không đi kèm yêu cầu tài chính",
+        "Khó truy vết kẻ tấn công"
+      ],
+      "narration": {
+        "text": "Chưa ai nhận trách nhiệm. | Không kèm yêu cầu tài chính, | và rất khó truy vết."
+      }
+    },
+    {
+      "id": "s-recap",
+      "kind": "recap",
+      "heading": {
+        "title": "Lưu lại",
+        "icon": "document"
+      },
+      "items": [
+        {
+          "text": "Tủ đông bị điều khiển từ xa, lên tới 50 độ C",
+          "icon": "thermometer"
+        },
+        {
+          "text": "Siêu thị ở Bỉ, Ireland, Thụy Điển bị ảnh hưởng",
+          "icon": "globe"
+        },
+        {
+          "text": "Thiết bị nối mạng là điểm yếu của bán lẻ",
+          "icon": "shield"
+        }
+      ],
+      "narration": {
+        "text": "Lưu lại: | tủ đông bị điều khiển từ xa, | nhiều nước bị ảnh hưởng, | thiết bị nối mạng là điểm yếu."
+      }
+    },
+    {
+      "id": "s-source",
+      "kind": "source",
+      "factId": "f-date",
+      "note": "Bài tổng hợp, các lời trích dẫn Reuters",
+      "seconds": 2.6
+    },
+    {
+      "id": "s-cta",
+      "kind": "cta",
+      "question": "Doanh nghiệp bạn có thiết bị nào đang điều khiển từ xa qua Internet?",
+      "narration": {
+        "text": "Doanh nghiệp bạn có thiết bị nào điều khiển qua Internet? Bình luận cho chúng tôi nhé."
+      }
+    }
+  ],
+  "narration": {
+    "enabled": true,
+    "provider": "gemini"
+  },
+  "captions": {
+    "enabled": true,
+    "style": "karaoke",
+    "timing": "estimated"
+  },
+  "transition": {
+    "type": "blur"
+  }
+}

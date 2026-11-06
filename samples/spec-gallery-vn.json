@@ -1,0 +1,262 @@
+{
+  "version": 1,
+  "id": "sample-vn-gallery",
+  "market": "VN",
+  "language": "vi",
+  "format": "reel-9x16",
+  "theme": {
+    "palette": "ember",
+    "background": "grid"
+  },
+  "source": {
+    "outlet": "VnExpress (dẫn Reuters)",
+    "title": "Hacker tăng nhiệt tủ lạnh đến 50 độ C tại hàng loạt siêu thị châu Âu",
+    "url": "https://vnexpress.net/hacker-tang-nhiet-tu-lanh-den-50-do-c-tai-hang-loat-sieu-thi-chau-au-5139939.html",
+    "publishedAt": "2026-11-03",
+    "author": "Châu An"
+  },
+  "facts": [
+    {
+      "id": "f-date",
+      "kind": "date",
+      "label": "Ngày xảy ra đợt tấn công",
+      "iso": "2026-11-02",
+      "raw": "2/11",
+      "evidence": {
+        "url": "https://vnexpress.net/hacker-tang-nhiet-tu-lanh-den-50-do-c-tai-hang-loat-sieu-thi-chau-au-5139939.html",
+        "quote": "Tương tự chiến dịch nhắm vào siêu thị ở Pháp giữa tháng 10, đợt tấn công ngày 2/11 ảnh hưởng đến chuỗi siêu thị Ahold Delhaize và Colruyt ở Bỉ, Luxembourg và hai nhà bán lẻ thực phẩm Thụy Điển là ICA và Coop.",
+        "paragraph": 1
+      }
+    },
+    {
+      "id": "f-supervalu",
+      "kind": "number",
+      "label": "Cửa hàng SuperValu bị ảnh hưởng (Ireland)",
+      "value": 13,
+      "raw": "13",
+      "unit": "cửa hàng",
+      "evidence": {
+        "url": "https://vnexpress.net/hacker-tang-nhiet-tu-lanh-den-50-do-c-tai-hang-loat-sieu-thi-chau-au-5139939.html",
+        "quote": "Tại Ireland, nhà bán buôn Musgrave nói sự cố tác động đến 13 cửa hàng SuperValu, buộc họ phải thu hồi một số sản phẩm đông và bảo quản lạnh.",
+        "paragraph": 2
+      }
+    },
+    {
+      "id": "f-carrefour",
+      "kind": "number",
+      "label": "Cửa hàng Carrefour tại Bỉ bị ảnh hưởng",
+      "value": 15,
+      "raw": "15",
+      "unit": "cửa hàng",
+      "evidence": {
+        "url": "https://vnexpress.net/hacker-tang-nhiet-tu-lanh-den-50-do-c-tai-hang-loat-sieu-thi-chau-au-5139939.html",
+        "quote": "Carrefour, chuỗi bán lẻ chịu ảnh hưởng nặng trong cuộc tấn công tại Pháp, lần này cho biết 15 trong số 700 cửa hàng của họ tại Bỉ bị ảnh hưởng.",
+        "paragraph": 2
+      }
+    },
+    {
+      "id": "f-noclaim",
+      "kind": "claim",
+      "text": "Chưa có cá nhân hay tổ chức nào nhận trách nhiệm.",
+      "evidence": {
+        "url": "https://vnexpress.net/hacker-tang-nhiet-tu-lanh-den-50-do-c-tai-hang-loat-sieu-thi-chau-au-5139939.html",
+        "quote": "Hiện chưa có cá nhân hay tổ chức nào nhận trách nhiệm.",
+        "paragraph": 15
+      }
+    }
+  ],
+  "scenes": [
+    {
+      "id": "s-hook",
+      "kind": "hook",
+      "headline": "Tủ đông siêu thị bị hack lên 50 độ C",
+      "sub": "Một đêm, hàng loạt siêu thị châu Âu",
+      "icon": "thermometer",
+      "narration": {
+        "text": "Tin tặc tăng nhiệt tủ đông lên 50 độ C ở hàng loạt siêu thị châu Âu, chỉ trong một đêm."
+      }
+    },
+    {
+      "id": "s-bul",
+      "kind": "bullets",
+      "eyebrow": "01 — DANH SÁCH",
+      "heading": {
+        "title": "Các ý",
+        "accent": "chính",
+        "icon": "document"
+      },
+      "title": "Điểm yếu của bán lẻ",
+      "items": [
+        {
+          "text": "Bộ điều khiển thiết bị làm lạnh",
+          "icon": "thermometer"
+        },
+        {
+          "text": "Hệ thống quản lý tòa nhà",
+          "icon": "building"
+        },
+        {
+          "text": "Thiết bị thanh toán tại quầy",
+          "icon": "money"
+        }
+      ],
+      "narration": {
+        "text": "Ba điểm yếu: | điều khiển làm lạnh, | quản lý tòa nhà, | và máy thanh toán."
+      }
+    },
+    {
+      "id": "s-proc",
+      "kind": "process",
+      "eyebrow": "02 — QUY TRÌNH",
+      "heading": {
+        "title": "Cách một cuộc",
+        "accent": "tấn công lan ra",
+        "icon": "robot"
+      },
+      "title": "Từ bảng điều khiển đến tủ đông",
+      "steps": [
+        {
+          "label": "Bảng điều khiển bị lộ",
+          "detail": "Đăng nhập, gần như không để lại dấu vết"
+        },
+        {
+          "label": "Lập trình lại nhiệt độ"
+        },
+        {
+          "label": "Thực phẩm phải tiêu hủy",
+          "detail": "Cửa hàng thu hồi hàng đông lạnh"
+        }
+      ],
+      "narration": {
+        "text": "Kẻ tấn công vào bảng điều khiển, | đổi nhiệt độ, | và thực phẩm phải bỏ đi."
+      }
+    },
+    {
+      "id": "s-bar",
+      "kind": "chart",
+      "eyebrow": "03 — BIỂU ĐỒ",
+      "heading": {
+        "title": "Cửa hàng",
+        "accent": "bị ảnh hưởng",
+        "icon": "chart"
+      },
+      "title": "Số cửa hàng bị ảnh hưởng",
+      "type": "bar",
+      "series": [
+        {
+          "factId": "f-supervalu",
+          "label": "SuperValu"
+        },
+        {
+          "factId": "f-carrefour",
+          "label": "Carrefour"
+        }
+      ],
+      "display": "full",
+      "narration": {
+        "text": "Ireland có 13 cửa hàng SuperValu, | Bỉ có 15 cửa hàng Carrefour."
+      }
+    },
+    {
+      "id": "s-line",
+      "kind": "chart",
+      "eyebrow": "03 — BIỂU ĐỒ",
+      "heading": {
+        "title": "Cửa hàng",
+        "accent": "bị ảnh hưởng",
+        "icon": "chart"
+      },
+      "title": "Diễn biến",
+      "type": "line",
+      "series": [
+        {
+          "factId": "f-supervalu",
+          "label": "Ireland"
+        },
+        {
+          "factId": "f-carrefour",
+          "label": "Bỉ"
+        }
+      ],
+      "display": "full",
+      "narration": {
+        "text": "Từ Ireland | sang Bỉ, số cửa hàng tăng."
+      }
+    },
+    {
+      "id": "s-donut",
+      "kind": "chart",
+      "eyebrow": "03 — BIỂU ĐỒ",
+      "heading": {
+        "title": "Cửa hàng",
+        "accent": "bị ảnh hưởng",
+        "icon": "chart"
+      },
+      "title": "Tỷ trọng",
+      "type": "donut",
+      "series": [
+        {
+          "factId": "f-supervalu",
+          "label": "SuperValu"
+        },
+        {
+          "factId": "f-carrefour",
+          "label": "Carrefour"
+        }
+      ],
+      "display": "full",
+      "narration": {
+        "text": "Hai chuỗi chiếm gần như bằng nhau."
+      }
+    },
+    {
+      "id": "s-cmp",
+      "kind": "compare",
+      "eyebrow": "04 — SO SÁNH",
+      "heading": {
+        "title": "So sánh",
+        "accent": "hai chuỗi",
+        "icon": "chart"
+      },
+      "title": "Cửa hàng bị ảnh hưởng",
+      "items": [
+        {
+          "factId": "f-supervalu",
+          "label": "SuperValu (Ireland)"
+        },
+        {
+          "factId": "f-carrefour",
+          "label": "Carrefour (Bỉ)"
+        }
+      ],
+      "mode": "bars",
+      "display": "full",
+      "narration": {
+        "text": "Carrefour | nhiều hơn một chút."
+      }
+    },
+    {
+      "id": "s-source",
+      "kind": "source",
+      "factId": "f-date",
+      "seconds": 2.6
+    }
+  ],
+  "narration": {
+    "enabled": true,
+    "provider": "gemini"
+  },
+  "captions": {
+    "enabled": true,
+    "style": "karaoke",
+    "timing": "estimated"
+  },
+  "transition": {
+    "type": "blur"
+  },
+  "qa": {
+    "minSeconds": 10,
+    "maxSeconds": 120,
+    "maxScenes": 18
+  }
+}

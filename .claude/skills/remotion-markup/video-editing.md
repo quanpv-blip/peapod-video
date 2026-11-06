@@ -3,7 +3,7 @@
 Structure the timeline around the things the user edits together: a captioned
 shot, a set of cutaways, or an independently timed music segment. Write every
 independently editable clip as its own JSX node with inline names and props.
-Use the timeline structure guide
+Use the [timeline structure guide](../remotion-interactivity/timeline-structure.md)
 for choosing tracks, timing groups, and connected compositions.
 
 ## Choose the cut behavior
@@ -98,7 +98,7 @@ export const Interview = () => {
 Each caption array stays inline on its own caption node, with timestamps relative
 to the original media file. Passing the array through a generic shot prop removes
 the source array the Caption editor needs. See
-displaying captions
+[displaying captions](../remotion-captions/display-captions.md#displaying-captions-alongside-video-content)
 for the caption component and setup.
 
 ## Place overlays at the scope they span
@@ -122,7 +122,7 @@ off a sound tail nor extends the visual to cover that tail.
 Music clips with gaps or adjacent boundaries can share one named track. They
 remain separately editable, including their source trims and volume envelopes:
 
-See the complete timeline example
+See the [complete timeline example](../remotion-interactivity/timeline-structure.md)
 for a music track alongside scene tracks.
 
 Check natural audio durations as well as explicit bounds before putting sounds

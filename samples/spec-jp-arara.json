@@ -1,0 +1,176 @@
+{
+  "version": 1,
+  "id": "sample-jp-arara",
+  "market": "JP",
+  "language": "ja",
+  "format": "reel-9x16",
+  "theme": { "palette": "ember", "background": "grid" },
+  "source": {
+    "outlet": "日経クロステック",
+    "title": "アララの情報流出で約7700万件追加か、最大713万通の不審メール送信も判明",
+    "url": "https://xtech.nikkei.com/atcl/nxt/news/24/03452/"
+  },
+  "facts": [
+    {
+      "id": "f-date",
+      "kind": "date",
+      "label": "ペイクラウドHDの追加発表",
+      "iso": "2026-11-02",
+      "raw": "2026年11月2日",
+      "evidence": { "url": "https://xtech.nikkei.com/atcl/nxt/news/24/03452/", "quote": "ペイクラウドホールディングスは2026年11月2日、子会社のアララが運営するメール配信サービス「アララメッセージ」への不正アクセスで", "paragraph": 0 }
+    },
+    {
+      "id": "f-oct29",
+      "kind": "date",
+      "label": "共用環境の流出を最初に公表",
+      "iso": "2026-10-29",
+      "raw": "10月29日",
+      "evidence": { "url": "https://xtech.nikkei.com/atcl/nxt/news/24/03452/", "quote": "10月29日には共用環境から約301万件の流出を公表していた", "paragraph": 0 }
+    },
+    {
+      "id": "f-servers",
+      "kind": "number",
+      "label": "情報が持ち出されたサーバー",
+      "value": 97,
+      "raw": "97",
+      "unit": "台",
+      "evidence": { "url": "https://xtech.nikkei.com/atcl/nxt/news/24/03452/", "quote": "契約企業向けのサーバー97台からも情報が持ち出され", "paragraph": 0 }
+    },
+    {
+      "id": "f-77m",
+      "kind": "number",
+      "label": "流出した恐れのあるメールアドレス",
+      "value": 77000000,
+      "raw": "約7700万",
+      "unit": "件",
+      "approx": true,
+      "evidence": { "url": "https://xtech.nikkei.com/atcl/nxt/news/24/03452/", "quote": "約7700万件のメールアドレスが流出したか、その恐れがあると発表した", "paragraph": 0 }
+    },
+    {
+      "id": "f-301",
+      "kind": "number",
+      "label": "共用環境の流出(10月29日の公表)",
+      "value": 3010000,
+      "raw": "約301万",
+      "unit": "件",
+      "approx": true,
+      "evidence": { "url": "https://xtech.nikkei.com/atcl/nxt/news/24/03452/", "quote": "10月29日には共用環境から約301万件の流出を公表していた", "paragraph": 0 }
+    },
+    {
+      "id": "f-338",
+      "kind": "number",
+      "label": "共用環境の流出(追加調査後)",
+      "value": 3386187,
+      "raw": "338万6187",
+      "unit": "件",
+      "evidence": { "url": "https://xtech.nikkei.com/atcl/nxt/news/24/03452/", "quote": "その後の調査で、流出したメールアドレスが338万6187件に増えたことに加え", "paragraph": 2 }
+    },
+    {
+      "id": "f-380",
+      "kind": "number",
+      "label": "対象となる契約企業(推計)",
+      "value": 380,
+      "raw": "最大約380",
+      "unit": "社",
+      "approx": true,
+      "evidence": { "url": "https://xtech.nikkei.com/atcl/nxt/news/24/03452/", "quote": "対象となる契約企業は最大約380社と推計している", "paragraph": 1 }
+    },
+    {
+      "id": "f-713",
+      "kind": "number",
+      "label": "送信された不審メール(最大)",
+      "value": 7130000,
+      "raw": "最大713万",
+      "unit": "通",
+      "approx": true,
+      "evidence": { "url": "https://xtech.nikkei.com/atcl/nxt/news/24/03452/", "quote": "アララの情報流出で約7700万件追加か、最大713万通の不審メール送信も判明" }
+    }
+  ],
+  "scenes": [
+    {
+      "id": "s-hook",
+      "kind": "hook",
+      "headline": "アララ流出、約7700万件の恐れ",
+      "sub": "メール配信サービスへの不正アクセス",
+      "icon": "mail",
+      "narration": { "text": "メール配信サービスへの不正アクセスで、約7700万件が流出した恐れがあります。" }
+    },
+    {
+      "id": "s-scale",
+      "kind": "stat",
+      "eyebrow": "01 — 規模",
+      "heading": { "title": "流出の恐れ", "accent": "約7700万件", "icon": "mail" },
+      "factId": "f-77m",
+      "label": "流出した恐れのあるメールアドレス",
+      "display": "full",
+      "annotation": "circle",
+      "context": "契約企業向けサーバーも対象",
+      "narration": { "text": "契約企業向けのサーバーからも、情報が持ち出されました。" }
+    },
+    {
+      "id": "s-grow",
+      "kind": "compare",
+      "eyebrow": "02 — 拡大",
+      "heading": { "title": "共用環境", "accent": "被害が拡大", "icon": "chart" },
+      "title": "共用環境から流出したメールアドレス",
+      "items": [
+        { "factId": "f-301", "label": "10月29日の公表" },
+        { "factId": "f-338", "label": "追加調査後" }
+      ],
+      "mode": "steps",
+      "display": "full",
+      "narration": { "text": "共用環境の流出も、| 約301万件から | 338万6187件に増えました。" }
+    },
+    {
+      "id": "s-flow",
+      "kind": "timeline",
+      "eyebrow": "03 — 経緯",
+      "heading": { "title": "発表の", "accent": "流れ", "icon": "clock" },
+      "events": [
+        { "when": "10月29日", "label": "共用環境からの流出を公表", "factId": "f-oct29" },
+        { "when": "11月2日", "label": "契約企業向けサーバーの流出を追加発表", "factId": "f-date" }
+      ],
+      "narration": { "text": "10月29日に最初の公表。| 11月2日に追加の流出を発表しました。" }
+    },
+    {
+      "id": "s-range",
+      "kind": "cards",
+      "eyebrow": "04 — 影響",
+      "heading": { "title": "影響の", "accent": "範囲", "icon": "building" },
+      "items": [
+        { "factId": "f-servers", "label": "サーバーから持ち出し", "tone": "accent" },
+        { "factId": "f-380", "label": "対象の契約企業(推計)", "tone": "gold" },
+        { "factId": "f-713", "label": "不審メールの送信", "tone": "violet" }
+      ],
+      "display": "full",
+      "narration": { "text": "サーバーは97台。| 契約企業は最大約380社。| 不審メールは最大713万通です。" }
+    },
+    {
+      "id": "s-recap",
+      "kind": "recap",
+      "heading": { "title": "まとめ", "icon": "document" },
+      "items": [
+        { "text": "約7700万件が流出の恐れ", "icon": "mail" },
+        { "text": "共用環境の被害も拡大", "icon": "chart" },
+        { "text": "契約企業は最大約380社", "icon": "building" }
+      ],
+      "narration": { "text": "まとめると、| 流出の恐れは約7700万件、| 共用環境の被害も拡大、| 対象は最大約380社です。" }
+    },
+    {
+      "id": "s-source",
+      "kind": "source",
+      "factId": "f-date",
+      "note": "2026年11月2日の発表に基づく",
+      "seconds": 2.6
+    },
+    {
+      "id": "s-cta",
+      "kind": "cta",
+      "question": "自社のメール配信の委託先、見直していますか？",
+      "narration": { "text": "自社のメール配信の委託先、見直していますか？コメントで教えてください。" }
+    }
+  ],
+  "narration": { "enabled": true, "provider": "gemini" },
+  "captions": { "enabled": true, "style": "karaoke", "timing": "estimated", "maxWordsPerPage": 3 },
+  "transition": { "type": "blur" }
+}

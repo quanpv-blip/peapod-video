@@ -1,0 +1,4305 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "version": {
+      "type": "number",
+      "const": 1
+    },
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9_-]{0,39}$",
+      "description": "id duy nhất của video, thường là \"p<id bài>-r<bản>\" nhưng viết thường."
+    },
+    "market": {
+      "type": "string",
+      "enum": [
+        "VN",
+        "JP"
+      ]
+    },
+    "language": {
+      "type": "string",
+      "enum": [
+        "vi",
+        "ja"
+      ],
+      "description": "VN phải là vi, JP phải là ja."
+    },
+    "format": {
+      "default": "reel-9x16",
+      "type": "string",
+      "enum": [
+        "reel-9x16",
+        "portrait-4x5",
+        "square-1x1",
+        "wide-16x9"
+      ]
+    },
+    "fps": {
+      "default": 30,
+      "type": "number",
+      "const": 30
+    },
+    "theme": {
+      "default": {
+        "palette": "ember",
+        "background": "grid",
+        "chapterColors": true
+      },
+      "type": "object",
+      "properties": {
+        "palette": {
+          "default": "ember",
+          "description": "ember: cam ấm như video mẫu; alert: đỏ cho tin sự cố.",
+          "type": "string",
+          "enum": [
+            "ember",
+            "indigo",
+            "ink",
+            "alert"
+          ]
+        },
+        "background": {
+          "default": "grid",
+          "type": "string",
+          "enum": [
+            "aurora",
+            "grid",
+            "solid",
+            "noise"
+          ]
+        },
+        "accent": {
+          "type": "string",
+          "pattern": "^#[0-9a-fA-F]{6}$"
+        },
+        "chapterColors": {
+          "default": true,
+          "description": "Đổi màu nhấn theo chương như video mẫu. Bảng \"alert\" luôn giữ màu đỏ.",
+          "type": "boolean"
+        }
+      },
+      "additionalProperties": false
+    },
+    "source": {
+      "type": "object",
+      "properties": {
+        "outlet": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 60,
+          "description": "Tên báo hoặc trang, ví dụ \"VnExpress\"."
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 160
+        },
+        "url": {
+          "type": "string",
+          "maxLength": 500,
+          "format": "uri"
+        },
+        "publishedAt": {
+          "type": "string",
+          "format": "date",
+          "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))$"
+        },
+        "author": {
+          "type": "string",
+          "maxLength": 60
+        }
+      },
+      "required": [
+        "outlet",
+        "title",
+        "url"
+      ],
+      "additionalProperties": false
+    },
+    "facts": {
+      "default": [],
+      "maxItems": 24,
+      "type": "array",
+      "items": {
+        "oneOf": [
+          {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "pattern": "^[a-z][a-z0-9_-]{0,39}$"
+              },
+              "evidence": {
+                "type": "object",
+                "properties": {
+                  "url": {
+                    "type": "string",
+                    "maxLength": 500,
+                    "format": "uri",
+                    "description": "Địa chỉ bài nguồn chứa câu trích."
+                  },
+                  "quote": {
+                    "type": "string",
+                    "minLength": 6,
+                    "maxLength": 600,
+                    "description": "Câu trích NGUYÊN VĂN từ bài nguồn, chứa con số hoặc phát biểu. Không diễn đạt lại."
+                  },
+                  "paragraph": {
+                    "description": "Số thứ tự đoạn văn trong bài (bắt đầu từ 0), nếu biết.",
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 200
+                  }
+                },
+                "required": [
+                  "url",
+                  "quote"
+                ],
+                "additionalProperties": false
+              },
+              "kind": {
+                "type": "string",
+                "const": "number"
+              },
+              "label": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 60,
+                "description": "Con số này đo cái gì. Ví dụ: \"Số địa chỉ email bị lộ\"."
+              },
+              "value": {
+                "type": "number",
+                "description": "Giá trị số đã quy đổi. Ví dụ 338万6187 thì 3386187."
+              },
+              "raw": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 40,
+                "description": "Đoạn chữ số đúng như trong evidence.quote, ví dụ \"338万6187\" hoặc \"15.000\"."
+              },
+              "unit": {
+                "default": "",
+                "description": "Đơn vị: 件, 円, %, euro, độ C, người...",
+                "type": "string",
+                "maxLength": 12
+              },
+              "approx": {
+                "default": false,
+                "description": "True nếu bài dùng từ xấp xỉ (約, khoảng, hơn...).",
+                "type": "boolean"
+              }
+            },
+            "required": [
+              "id",
+              "evidence",
+              "kind",
+              "label",
+              "value",
+              "raw"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "pattern": "^[a-z][a-z0-9_-]{0,39}$"
+              },
+              "evidence": {
+                "type": "object",
+                "properties": {
+                  "url": {
+                    "type": "string",
+                    "maxLength": 500,
+                    "format": "uri",
+                    "description": "Địa chỉ bài nguồn chứa câu trích."
+                  },
+                  "quote": {
+                    "type": "string",
+                    "minLength": 6,
+                    "maxLength": 600,
+                    "description": "Câu trích NGUYÊN VĂN từ bài nguồn, chứa con số hoặc phát biểu. Không diễn đạt lại."
+                  },
+                  "paragraph": {
+                    "description": "Số thứ tự đoạn văn trong bài (bắt đầu từ 0), nếu biết.",
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 200
+                  }
+                },
+                "required": [
+                  "url",
+                  "quote"
+                ],
+                "additionalProperties": false
+              },
+              "kind": {
+                "type": "string",
+                "const": "quote"
+              },
+              "text": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 220,
+                "description": "Lời trích nguyên văn."
+              },
+              "speaker": {
+                "type": "string",
+                "maxLength": 60
+              }
+            },
+            "required": [
+              "id",
+              "evidence",
+              "kind",
+              "text"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "pattern": "^[a-z][a-z0-9_-]{0,39}$"
+              },
+              "evidence": {
+                "type": "object",
+                "properties": {
+                  "url": {
+                    "type": "string",
+                    "maxLength": 500,
+                    "format": "uri",
+                    "description": "Địa chỉ bài nguồn chứa câu trích."
+                  },
+                  "quote": {
+                    "type": "string",
+                    "minLength": 6,
+                    "maxLength": 600,
+                    "description": "Câu trích NGUYÊN VĂN từ bài nguồn, chứa con số hoặc phát biểu. Không diễn đạt lại."
+                  },
+                  "paragraph": {
+                    "description": "Số thứ tự đoạn văn trong bài (bắt đầu từ 0), nếu biết.",
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 200
+                  }
+                },
+                "required": [
+                  "url",
+                  "quote"
+                ],
+                "additionalProperties": false
+              },
+              "kind": {
+                "type": "string",
+                "const": "date"
+              },
+              "label": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 60
+              },
+              "iso": {
+                "type": "string",
+                "format": "date",
+                "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))$"
+              },
+              "raw": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 30,
+                "description": "Ngày đúng như trong bài, ví dụ \"2026年11月2日\"."
+              }
+            },
+            "required": [
+              "id",
+              "evidence",
+              "kind",
+              "label",
+              "iso",
+              "raw"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "pattern": "^[a-z][a-z0-9_-]{0,39}$"
+              },
+              "evidence": {
+                "type": "object",
+                "properties": {
+                  "url": {
+                    "type": "string",
+                    "maxLength": 500,
+                    "format": "uri",
+                    "description": "Địa chỉ bài nguồn chứa câu trích."
+                  },
+                  "quote": {
+                    "type": "string",
+                    "minLength": 6,
+                    "maxLength": 600,
+                    "description": "Câu trích NGUYÊN VĂN từ bài nguồn, chứa con số hoặc phát biểu. Không diễn đạt lại."
+                  },
+                  "paragraph": {
+                    "description": "Số thứ tự đoạn văn trong bài (bắt đầu từ 0), nếu biết.",
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 200
+                  }
+                },
+                "required": [
+                  "url",
+                  "quote"
+                ],
+                "additionalProperties": false
+              },
+              "kind": {
+                "type": "string",
+                "const": "claim"
+              },
+              "text": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 200,
+                "description": "Khẳng định đã được bài nguồn xác nhận, viết gọn nhưng không đổi nghĩa."
+              }
+            },
+            "required": [
+              "id",
+              "evidence",
+              "kind",
+              "text"
+            ],
+            "additionalProperties": false
+          }
+        ]
+      }
+    },
+    "scenes": {
+      "minItems": 3,
+      "maxItems": 18,
+      "type": "array",
+      "items": {
+        "oneOf": [
+          {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "pattern": "^[a-z][a-z0-9_-]{0,39}$"
+              },
+              "heading": {
+                "type": "object",
+                "properties": {
+                  "title": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 32,
+                    "description": "Dòng 1 tiêu đề chương, chữ trắng. Ví dụ \"Agent\"."
+                  },
+                  "accent": {
+                    "description": "Dòng 2, màu nhấn. Ví dụ \"= đạo diễn\".",
+                    "type": "string",
+                    "maxLength": 32
+                  },
+                  "icon": {
+                    "type": "string",
+                    "enum": [
+                      "shield",
+                      "alert",
+                      "chip",
+                      "cloud",
+                      "server",
+                      "money",
+                      "people",
+                      "globe",
+                      "lock",
+                      "bolt",
+                      "chart",
+                      "clock",
+                      "check",
+                      "mail",
+                      "building",
+                      "factory",
+                      "robot",
+                      "thermometer",
+                      "link",
+                      "document"
+                    ]
+                  }
+                },
+                "required": [
+                  "title"
+                ],
+                "additionalProperties": false,
+                "description": "Tiêu đề chương ở đầu khung. Các cảnh liền nhau có cùng heading giữ nguyên tiêu đề, không chạy lại hiệu ứng."
+              },
+              "eyebrow": {
+                "description": "Dòng nhỏ trên tiêu đề, ví dụ \"01 — HẬU QUẢ\" để đánh số chương.",
+                "type": "string",
+                "maxLength": 30
+              },
+              "note": {
+                "description": "Chú thích nhỏ màu xám dưới nội dung, ví dụ \"Theo VnExpress, 3/11/2026\" hoặc \"* Ví dụ minh hoạ\".",
+                "type": "string",
+                "maxLength": 90
+              },
+              "narration": {
+                "description": "Lời đọc của riêng cảnh này. Độ dài cảnh lấy theo âm thanh thật nếu có.",
+                "type": "object",
+                "properties": {
+                  "text": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 320,
+                    "description": "Lời đọc của riêng cảnh. Dùng \"|\" để đánh dấu lúc từng phần tử hiện ra."
+                  }
+                },
+                "required": [
+                  "text"
+                ],
+                "additionalProperties": false
+              },
+              "seconds": {
+                "description": "Gợi ý thời lượng khi không có lời đọc. Có âm thanh thật thì bị ghi đè.",
+                "type": "number",
+                "minimum": 1.5,
+                "maximum": 15
+              },
+              "sfx": {
+                "default": [],
+                "maxItems": 2,
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "at": {
+                      "default": "start",
+                      "type": "string",
+                      "enum": [
+                        "start",
+                        "end"
+                      ]
+                    },
+                    "sound": {
+                      "type": "string",
+                      "enum": [
+                        "whoosh",
+                        "whip",
+                        "ding",
+                        "page-turn",
+                        "switch",
+                        "mouse-click",
+                        "shutter-modern"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "sound"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "transitionOut": {
+                "description": "Ghi đè chuyển cảnh mặc định khi rời cảnh này.",
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "default": "blur",
+                    "type": "string",
+                    "enum": [
+                      "blur",
+                      "fade",
+                      "slide",
+                      "wipe",
+                      "flip",
+                      "none"
+                    ]
+                  },
+                  "direction": {
+                    "description": "Chỉ dùng cho slide và wipe.",
+                    "type": "string",
+                    "enum": [
+                      "from-left",
+                      "from-right",
+                      "from-top",
+                      "from-bottom"
+                    ]
+                  },
+                  "durationFrames": {
+                    "default": 24,
+                    "description": "Số khung chồng giữa hai cảnh (blur: mờ ra ~1/3, nền trống, hiện vào ~1/2). Lời đọc cảnh sau chỉ bắt đầu khi hình đã hiện.",
+                    "type": "integer",
+                    "minimum": 6,
+                    "maximum": 36
+                  }
+                },
+                "additionalProperties": false
+              },
+              "kind": {
+                "type": "string",
+                "const": "hook"
+              },
+              "headline": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 60,
+                "description": "Câu mở 3 giây đầu, gợi tò mò, không phóng đại."
+              },
+              "sub": {
+                "type": "string",
+                "maxLength": 90
+              },
+              "style": {
+                "default": "kinetic",
+                "type": "string",
+                "enum": [
+                  "kinetic",
+                  "card"
+                ]
+              },
+              "icon": {
+                "type": "string",
+                "enum": [
+                  "shield",
+                  "alert",
+                  "chip",
+                  "cloud",
+                  "server",
+                  "money",
+                  "people",
+                  "globe",
+                  "lock",
+                  "bolt",
+                  "chart",
+                  "clock",
+                  "check",
+                  "mail",
+                  "building",
+                  "factory",
+                  "robot",
+                  "thermometer",
+                  "link",
+                  "document"
+                ]
+              }
+            },
+            "required": [
+              "id",
+              "kind",
+              "headline"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "pattern": "^[a-z][a-z0-9_-]{0,39}$"
+              },
+              "heading": {
+                "type": "object",
+                "properties": {
+                  "title": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 32,
+                    "description": "Dòng 1 tiêu đề chương, chữ trắng. Ví dụ \"Agent\"."
+                  },
+                  "accent": {
+                    "description": "Dòng 2, màu nhấn. Ví dụ \"= đạo diễn\".",
+                    "type": "string",
+                    "maxLength": 32
+                  },
+                  "icon": {
+                    "type": "string",
+                    "enum": [
+                      "shield",
+                      "alert",
+                      "chip",
+                      "cloud",
+                      "server",
+                      "money",
+                      "people",
+                      "globe",
+                      "lock",
+                      "bolt",
+                      "chart",
+                      "clock",
+                      "check",
+                      "mail",
+                      "building",
+                      "factory",
+                      "robot",
+                      "thermometer",
+                      "link",
+                      "document"
+                    ]
+                  }
+                },
+                "required": [
+                  "title"
+                ],
+                "additionalProperties": false,
+                "description": "Tiêu đề chương ở đầu khung. Các cảnh liền nhau có cùng heading giữ nguyên tiêu đề, không chạy lại hiệu ứng."
+              },
+              "eyebrow": {
+                "description": "Dòng nhỏ trên tiêu đề, ví dụ \"01 — HẬU QUẢ\" để đánh số chương.",
+                "type": "string",
+                "maxLength": 30
+              },
+              "note": {
+                "description": "Chú thích nhỏ màu xám dưới nội dung, ví dụ \"Theo VnExpress, 3/11/2026\" hoặc \"* Ví dụ minh hoạ\".",
+                "type": "string",
+                "maxLength": 90
+              },
+              "narration": {
+                "description": "Lời đọc của riêng cảnh này. Độ dài cảnh lấy theo âm thanh thật nếu có.",
+                "type": "object",
+                "properties": {
+                  "text": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 320,
+                    "description": "Lời đọc của riêng cảnh. Dùng \"|\" để đánh dấu lúc từng phần tử hiện ra."
+                  }
+                },
+                "required": [
+                  "text"
+                ],
+                "additionalProperties": false
+              },
+              "seconds": {
+                "description": "Gợi ý thời lượng khi không có lời đọc. Có âm thanh thật thì bị ghi đè.",
+                "type": "number",
+                "minimum": 1.5,
+                "maximum": 15
+              },
+              "sfx": {
+                "default": [],
+                "maxItems": 2,
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "at": {
+                      "default": "start",
+                      "type": "string",
+                      "enum": [
+                        "start",
+                        "end"
+                      ]
+                    },
+                    "sound": {
+                      "type": "string",
+                      "enum": [
+                        "whoosh",
+                        "whip",
+                        "ding",
+                        "page-turn",
+                        "switch",
+                        "mouse-click",
+                        "shutter-modern"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "sound"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "transitionOut": {
+                "description": "Ghi đè chuyển cảnh mặc định khi rời cảnh này.",
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "default": "blur",
+                    "type": "string",
+                    "enum": [
+                      "blur",
+                      "fade",
+                      "slide",
+                      "wipe",
+                      "flip",
+                      "none"
+                    ]
+                  },
+                  "direction": {
+                    "description": "Chỉ dùng cho slide và wipe.",
+                    "type": "string",
+                    "enum": [
+                      "from-left",
+                      "from-right",
+                      "from-top",
+                      "from-bottom"
+                    ]
+                  },
+                  "durationFrames": {
+                    "default": 24,
+                    "description": "Số khung chồng giữa hai cảnh (blur: mờ ra ~1/3, nền trống, hiện vào ~1/2). Lời đọc cảnh sau chỉ bắt đầu khi hình đã hiện.",
+                    "type": "integer",
+                    "minimum": 6,
+                    "maximum": 36
+                  }
+                },
+                "additionalProperties": false
+              },
+              "kind": {
+                "type": "string",
+                "const": "stat"
+              },
+              "factId": {
+                "type": "string",
+                "pattern": "^[a-z][a-z0-9_-]{0,39}$",
+                "description": "Fact dạng number cung cấp con số. KHÔNG nhập số trực tiếp."
+              },
+              "label": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 48,
+                "description": "Nhãn nói con số đo cái gì."
+              },
+              "display": {
+                "default": "full",
+                "description": "full giữ nguyên độ chính xác; compact làm tròn (3,39 triệu; 339万).",
+                "type": "string",
+                "enum": [
+                  "full",
+                  "compact"
+                ]
+              },
+              "countUp": {
+                "default": true,
+                "type": "boolean"
+              },
+              "annotation": {
+                "default": "none",
+                "description": "Nét vẽ tay nhấn mạnh (rough-notation).",
+                "type": "string",
+                "enum": [
+                  "circle",
+                  "underline",
+                  "highlight",
+                  "box",
+                  "none"
+                ]
+              },
+              "context": {
+                "description": "Một dòng ngữ cảnh, ví dụ \"tăng từ 301万 hôm 29/10\".",
+                "type": "string",
+                "maxLength": 80
+              },
+              "icon": {
+                "type": "string",
+                "enum": [
+                  "shield",
+                  "alert",
+                  "chip",
+                  "cloud",
+                  "server",
+                  "money",
+                  "people",
+                  "globe",
+                  "lock",
+                  "bolt",
+                  "chart",
+                  "clock",
+                  "check",
+                  "mail",
+                  "building",
+                  "factory",
+                  "robot",
+                  "thermometer",
+                  "link",
+                  "document"
+                ]
+              }
+            },
+            "required": [
+              "id",
+              "kind",
+              "factId",
+              "label"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "pattern": "^[a-z][a-z0-9_-]{0,39}$"
+              },
+              "heading": {
+                "type": "object",
+                "properties": {
+                  "title": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 32,
+                    "description": "Dòng 1 tiêu đề chương, chữ trắng. Ví dụ \"Agent\"."
+                  },
+                  "accent": {
+                    "description": "Dòng 2, màu nhấn. Ví dụ \"= đạo diễn\".",
+                    "type": "string",
+                    "maxLength": 32
+                  },
+                  "icon": {
+                    "type": "string",
+                    "enum": [
+                      "shield",
+                      "alert",
+                      "chip",
+                      "cloud",
+                      "server",
+                      "money",
+                      "people",
+                      "globe",
+                      "lock",
+                      "bolt",
+                      "chart",
+                      "clock",
+                      "check",
+                      "mail",
+                      "building",
+                      "factory",
+                      "robot",
+                      "thermometer",
+                      "link",
+                      "document"
+                    ]
+                  }
+                },
+                "required": [
+                  "title"
+                ],
+                "additionalProperties": false,
+                "description": "Tiêu đề chương ở đầu khung. Các cảnh liền nhau có cùng heading giữ nguyên tiêu đề, không chạy lại hiệu ứng."
+              },
+              "eyebrow": {
+                "description": "Dòng nhỏ trên tiêu đề, ví dụ \"01 — HẬU QUẢ\" để đánh số chương.",
+                "type": "string",
+                "maxLength": 30
+              },
+              "note": {
+                "description": "Chú thích nhỏ màu xám dưới nội dung, ví dụ \"Theo VnExpress, 3/11/2026\" hoặc \"* Ví dụ minh hoạ\".",
+                "type": "string",
+                "maxLength": 90
+              },
+              "narration": {
+                "description": "Lời đọc của riêng cảnh này. Độ dài cảnh lấy theo âm thanh thật nếu có.",
+                "type": "object",
+                "properties": {
+                  "text": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 320,
+                    "description": "Lời đọc của riêng cảnh. Dùng \"|\" để đánh dấu lúc từng phần tử hiện ra."
+                  }
+                },
+                "required": [
+                  "text"
+                ],
+                "additionalProperties": false
+              },
+              "seconds": {
+                "description": "Gợi ý thời lượng khi không có lời đọc. Có âm thanh thật thì bị ghi đè.",
+                "type": "number",
+                "minimum": 1.5,
+                "maximum": 15
+              },
+              "sfx": {
+                "default": [],
+                "maxItems": 2,
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "at": {
+                      "default": "start",
+                      "type": "string",
+                      "enum": [
+                        "start",
+                        "end"
+                      ]
+                    },
+                    "sound": {
+                      "type": "string",
+                      "enum": [
+                        "whoosh",
+                        "whip",
+                        "ding",
+                        "page-turn",
+                        "switch",
+                        "mouse-click",
+                        "shutter-modern"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "sound"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "transitionOut": {
+                "description": "Ghi đè chuyển cảnh mặc định khi rời cảnh này.",
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "default": "blur",
+                    "type": "string",
+                    "enum": [
+                      "blur",
+                      "fade",
+                      "slide",
+                      "wipe",
+                      "flip",
+                      "none"
+                    ]
+                  },
+                  "direction": {
+                    "description": "Chỉ dùng cho slide và wipe.",
+                    "type": "string",
+                    "enum": [
+                      "from-left",
+                      "from-right",
+                      "from-top",
+                      "from-bottom"
+                    ]
+                  },
+                  "durationFrames": {
+                    "default": 24,
+                    "description": "Số khung chồng giữa hai cảnh (blur: mờ ra ~1/3, nền trống, hiện vào ~1/2). Lời đọc cảnh sau chỉ bắt đầu khi hình đã hiện.",
+                    "type": "integer",
+                    "minimum": 6,
+                    "maximum": 36
+                  }
+                },
+                "additionalProperties": false
+              },
+              "kind": {
+                "type": "string",
+                "const": "compare"
+              },
+              "title": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 48
+              },
+              "items": {
+                "minItems": 2,
+                "maxItems": 4,
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "factId": {
+                      "type": "string",
+                      "pattern": "^[a-z][a-z0-9_-]{0,39}$",
+                      "description": "id của một fact có trong spec.facts."
+                    },
+                    "label": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 32
+                    }
+                  },
+                  "required": [
+                    "factId",
+                    "label"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "mode": {
+                "default": "steps",
+                "description": "steps: các mốc nối tiếp (trước, sau); bars: cột so sánh.",
+                "type": "string",
+                "enum": [
+                  "bars",
+                  "steps"
+                ]
+              },
+              "display": {
+                "default": "compact",
+                "type": "string",
+                "enum": [
+                  "full",
+                  "compact"
+                ]
+              }
+            },
+            "required": [
+              "id",
+              "kind",
+              "title",
+              "items"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "pattern": "^[a-z][a-z0-9_-]{0,39}$"
+              },
+              "heading": {
+                "type": "object",
+                "properties": {
+                  "title": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 32,
+                    "description": "Dòng 1 tiêu đề chương, chữ trắng. Ví dụ \"Agent\"."
+                  },
+                  "accent": {
+                    "description": "Dòng 2, màu nhấn. Ví dụ \"= đạo diễn\".",
+                    "type": "string",
+                    "maxLength": 32
+                  },
+                  "icon": {
+                    "type": "string",
+                    "enum": [
+                      "shield",
+                      "alert",
+                      "chip",
+                      "cloud",
+                      "server",
+                      "money",
+                      "people",
+                      "globe",
+                      "lock",
+                      "bolt",
+                      "chart",
+                      "clock",
+                      "check",
+                      "mail",
+                      "building",
+                      "factory",
+                      "robot",
+                      "thermometer",
+                      "link",
+                      "document"
+                    ]
+                  }
+                },
+                "required": [
+                  "title"
+                ],
+                "additionalProperties": false,
+                "description": "Tiêu đề chương ở đầu khung. Các cảnh liền nhau có cùng heading giữ nguyên tiêu đề, không chạy lại hiệu ứng."
+              },
+              "eyebrow": {
+                "description": "Dòng nhỏ trên tiêu đề, ví dụ \"01 — HẬU QUẢ\" để đánh số chương.",
+                "type": "string",
+                "maxLength": 30
+              },
+              "note": {
+                "description": "Chú thích nhỏ màu xám dưới nội dung, ví dụ \"Theo VnExpress, 3/11/2026\" hoặc \"* Ví dụ minh hoạ\".",
+                "type": "string",
+                "maxLength": 90
+              },
+              "narration": {
+                "description": "Lời đọc của riêng cảnh này. Độ dài cảnh lấy theo âm thanh thật nếu có.",
+                "type": "object",
+                "properties": {
+                  "text": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 320,
+                    "description": "Lời đọc của riêng cảnh. Dùng \"|\" để đánh dấu lúc từng phần tử hiện ra."
+                  }
+                },
+                "required": [
+                  "text"
+                ],
+                "additionalProperties": false
+              },
+              "seconds": {
+                "description": "Gợi ý thời lượng khi không có lời đọc. Có âm thanh thật thì bị ghi đè.",
+                "type": "number",
+                "minimum": 1.5,
+                "maximum": 15
+              },
+              "sfx": {
+                "default": [],
+                "maxItems": 2,
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "at": {
+                      "default": "start",
+                      "type": "string",
+                      "enum": [
+                        "start",
+                        "end"
+                      ]
+                    },
+                    "sound": {
+                      "type": "string",
+                      "enum": [
+                        "whoosh",
+                        "whip",
+                        "ding",
+                        "page-turn",
+                        "switch",
+                        "mouse-click",
+                        "shutter-modern"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "sound"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "transitionOut": {
+                "description": "Ghi đè chuyển cảnh mặc định khi rời cảnh này.",
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "default": "blur",
+                    "type": "string",
+                    "enum": [
+                      "blur",
+                      "fade",
+                      "slide",
+                      "wipe",
+                      "flip",
+                      "none"
+                    ]
+                  },
+                  "direction": {
+                    "description": "Chỉ dùng cho slide và wipe.",
+                    "type": "string",
+                    "enum": [
+                      "from-left",
+                      "from-right",
+                      "from-top",
+                      "from-bottom"
+                    ]
+                  },
+                  "durationFrames": {
+                    "default": 24,
+                    "description": "Số khung chồng giữa hai cảnh (blur: mờ ra ~1/3, nền trống, hiện vào ~1/2). Lời đọc cảnh sau chỉ bắt đầu khi hình đã hiện.",
+                    "type": "integer",
+                    "minimum": 6,
+                    "maximum": 36
+                  }
+                },
+                "additionalProperties": false
+              },
+              "kind": {
+                "type": "string",
+                "const": "timeline"
+              },
+              "title": {
+                "type": "string",
+                "maxLength": 48
+              },
+              "events": {
+                "minItems": 2,
+                "maxItems": 6,
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "factId": {
+                      "type": "string",
+                      "pattern": "^[a-z][a-z0-9_-]{0,39}$",
+                      "description": "id của một fact có trong spec.facts."
+                    },
+                    "when": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 24,
+                      "description": "Mốc thời gian hiển thị, ví dụ \"29/10\"."
+                    },
+                    "label": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 60
+                    }
+                  },
+                  "required": [
+                    "when",
+                    "label"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "orientation": {
+                "default": "vertical",
+                "type": "string",
+                "enum": [
+                  "vertical",
+                  "horizontal"
+                ]
+              }
+            },
+            "required": [
+              "id",
+              "kind",
+              "events"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "pattern": "^[a-z][a-z0-9_-]{0,39}$"
+              },
+              "heading": {
+                "type": "object",
+                "properties": {
+                  "title": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 32,
+                    "description": "Dòng 1 tiêu đề chương, chữ trắng. Ví dụ \"Agent\"."
+                  },
+                  "accent": {
+                    "description": "Dòng 2, màu nhấn. Ví dụ \"= đạo diễn\".",
+                    "type": "string",
+                    "maxLength": 32
+                  },
+                  "icon": {
+                    "type": "string",
+                    "enum": [
+                      "shield",
+                      "alert",
+                      "chip",
+                      "cloud",
+                      "server",
+                      "money",
+                      "people",
+                      "globe",
+                      "lock",
+                      "bolt",
+                      "chart",
+                      "clock",
+                      "check",
+                      "mail",
+                      "building",
+                      "factory",
+                      "robot",
+                      "thermometer",
+                      "link",
+                      "document"
+                    ]
+                  }
+                },
+                "required": [
+                  "title"
+                ],
+                "additionalProperties": false,
+                "description": "Tiêu đề chương ở đầu khung. Các cảnh liền nhau có cùng heading giữ nguyên tiêu đề, không chạy lại hiệu ứng."
+              },
+              "eyebrow": {
+                "description": "Dòng nhỏ trên tiêu đề, ví dụ \"01 — HẬU QUẢ\" để đánh số chương.",
+                "type": "string",
+                "maxLength": 30
+              },
+              "note": {
+                "description": "Chú thích nhỏ màu xám dưới nội dung, ví dụ \"Theo VnExpress, 3/11/2026\" hoặc \"* Ví dụ minh hoạ\".",
+                "type": "string",
+                "maxLength": 90
+              },
+              "narration": {
+                "description": "Lời đọc của riêng cảnh này. Độ dài cảnh lấy theo âm thanh thật nếu có.",
+                "type": "object",
+                "properties": {
+                  "text": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 320,
+                    "description": "Lời đọc của riêng cảnh. Dùng \"|\" để đánh dấu lúc từng phần tử hiện ra."
+                  }
+                },
+                "required": [
+                  "text"
+                ],
+                "additionalProperties": false
+              },
+              "seconds": {
+                "description": "Gợi ý thời lượng khi không có lời đọc. Có âm thanh thật thì bị ghi đè.",
+                "type": "number",
+                "minimum": 1.5,
+                "maximum": 15
+              },
+              "sfx": {
+                "default": [],
+                "maxItems": 2,
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "at": {
+                      "default": "start",
+                      "type": "string",
+                      "enum": [
+                        "start",
+                        "end"
+                      ]
+                    },
+                    "sound": {
+                      "type": "string",
+                      "enum": [
+                        "whoosh",
+                        "whip",
+                        "ding",
+                        "page-turn",
+                        "switch",
+                        "mouse-click",
+                        "shutter-modern"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "sound"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "transitionOut": {
+                "description": "Ghi đè chuyển cảnh mặc định khi rời cảnh này.",
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "default": "blur",
+                    "type": "string",
+                    "enum": [
+                      "blur",
+                      "fade",
+                      "slide",
+                      "wipe",
+                      "flip",
+                      "none"
+                    ]
+                  },
+                  "direction": {
+                    "description": "Chỉ dùng cho slide và wipe.",
+                    "type": "string",
+                    "enum": [
+                      "from-left",
+                      "from-right",
+                      "from-top",
+                      "from-bottom"
+                    ]
+                  },
+                  "durationFrames": {
+                    "default": 24,
+                    "description": "Số khung chồng giữa hai cảnh (blur: mờ ra ~1/3, nền trống, hiện vào ~1/2). Lời đọc cảnh sau chỉ bắt đầu khi hình đã hiện.",
+                    "type": "integer",
+                    "minimum": 6,
+                    "maximum": 36
+                  }
+                },
+                "additionalProperties": false
+              },
+              "kind": {
+                "type": "string",
+                "const": "chart"
+              },
+              "title": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 48
+              },
+              "type": {
+                "type": "string",
+                "enum": [
+                  "bar",
+                  "line",
+                  "donut"
+                ]
+              },
+              "series": {
+                "minItems": 2,
+                "maxItems": 8,
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "factId": {
+                      "type": "string",
+                      "pattern": "^[a-z][a-z0-9_-]{0,39}$",
+                      "description": "id của một fact có trong spec.facts."
+                    },
+                    "label": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 24
+                    }
+                  },
+                  "required": [
+                    "factId",
+                    "label"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "display": {
+                "default": "compact",
+                "type": "string",
+                "enum": [
+                  "full",
+                  "compact"
+                ]
+              }
+            },
+            "required": [
+              "id",
+              "kind",
+              "title",
+              "type",
+              "series"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "pattern": "^[a-z][a-z0-9_-]{0,39}$"
+              },
+              "heading": {
+                "type": "object",
+                "properties": {
+                  "title": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 32,
+                    "description": "Dòng 1 tiêu đề chương, chữ trắng. Ví dụ \"Agent\"."
+                  },
+                  "accent": {
+                    "description": "Dòng 2, màu nhấn. Ví dụ \"= đạo diễn\".",
+                    "type": "string",
+                    "maxLength": 32
+                  },
+                  "icon": {
+                    "type": "string",
+                    "enum": [
+                      "shield",
+                      "alert",
+                      "chip",
+                      "cloud",
+                      "server",
+                      "money",
+                      "people",
+                      "globe",
+                      "lock",
+                      "bolt",
+                      "chart",
+                      "clock",
+                      "check",
+                      "mail",
+                      "building",
+                      "factory",
+                      "robot",
+                      "thermometer",
+                      "link",
+                      "document"
+                    ]
+                  }
+                },
+                "required": [
+                  "title"
+                ],
+                "additionalProperties": false,
+                "description": "Tiêu đề chương ở đầu khung. Các cảnh liền nhau có cùng heading giữ nguyên tiêu đề, không chạy lại hiệu ứng."
+              },
+              "eyebrow": {
+                "description": "Dòng nhỏ trên tiêu đề, ví dụ \"01 — HẬU QUẢ\" để đánh số chương.",
+                "type": "string",
+                "maxLength": 30
+              },
+              "note": {
+                "description": "Chú thích nhỏ màu xám dưới nội dung, ví dụ \"Theo VnExpress, 3/11/2026\" hoặc \"* Ví dụ minh hoạ\".",
+                "type": "string",
+                "maxLength": 90
+              },
+              "narration": {
+                "description": "Lời đọc của riêng cảnh này. Độ dài cảnh lấy theo âm thanh thật nếu có.",
+                "type": "object",
+                "properties": {
+                  "text": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 320,
+                    "description": "Lời đọc của riêng cảnh. Dùng \"|\" để đánh dấu lúc từng phần tử hiện ra."
+                  }
+                },
+                "required": [
+                  "text"
+                ],
+                "additionalProperties": false
+              },
+              "seconds": {
+                "description": "Gợi ý thời lượng khi không có lời đọc. Có âm thanh thật thì bị ghi đè.",
+                "type": "number",
+                "minimum": 1.5,
+                "maximum": 15
+              },
+              "sfx": {
+                "default": [],
+                "maxItems": 2,
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "at": {
+                      "default": "start",
+                      "type": "string",
+                      "enum": [
+                        "start",
+                        "end"
+                      ]
+                    },
+                    "sound": {
+                      "type": "string",
+                      "enum": [
+                        "whoosh",
+                        "whip",
+                        "ding",
+                        "page-turn",
+                        "switch",
+                        "mouse-click",
+                        "shutter-modern"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "sound"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "transitionOut": {
+                "description": "Ghi đè chuyển cảnh mặc định khi rời cảnh này.",
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "default": "blur",
+                    "type": "string",
+                    "enum": [
+                      "blur",
+                      "fade",
+                      "slide",
+                      "wipe",
+                      "flip",
+                      "none"
+                    ]
+                  },
+                  "direction": {
+                    "description": "Chỉ dùng cho slide và wipe.",
+                    "type": "string",
+                    "enum": [
+                      "from-left",
+                      "from-right",
+                      "from-top",
+                      "from-bottom"
+                    ]
+                  },
+                  "durationFrames": {
+                    "default": 24,
+                    "description": "Số khung chồng giữa hai cảnh (blur: mờ ra ~1/3, nền trống, hiện vào ~1/2). Lời đọc cảnh sau chỉ bắt đầu khi hình đã hiện.",
+                    "type": "integer",
+                    "minimum": 6,
+                    "maximum": 36
+                  }
+                },
+                "additionalProperties": false
+              },
+              "kind": {
+                "type": "string",
+                "const": "quote"
+              },
+              "factId": {
+                "type": "string",
+                "pattern": "^[a-z][a-z0-9_-]{0,39}$",
+                "description": "Fact dạng quote."
+              },
+              "attribution": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 60,
+                "description": "Ai nói, ở đâu. Bắt buộc để người xem biết nguồn."
+              },
+              "highlight": {
+                "default": [],
+                "description": "Cụm từ trong lời trích cần nhấn (phải là chuỗi con của lời trích).",
+                "maxItems": 3,
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 40
+                }
+              }
+            },
+            "required": [
+              "id",
+              "kind",
+              "factId",
+              "attribution"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "pattern": "^[a-z][a-z0-9_-]{0,39}$"
+              },
+              "heading": {
+                "type": "object",
+                "properties": {
+                  "title": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 32,
+                    "description": "Dòng 1 tiêu đề chương, chữ trắng. Ví dụ \"Agent\"."
+                  },
+                  "accent": {
+                    "description": "Dòng 2, màu nhấn. Ví dụ \"= đạo diễn\".",
+                    "type": "string",
+                    "maxLength": 32
+                  },
+                  "icon": {
+                    "type": "string",
+                    "enum": [
+                      "shield",
+                      "alert",
+                      "chip",
+                      "cloud",
+                      "server",
+                      "money",
+                      "people",
+                      "globe",
+                      "lock",
+                      "bolt",
+                      "chart",
+                      "clock",
+                      "check",
+                      "mail",
+                      "building",
+                      "factory",
+                      "robot",
+                      "thermometer",
+                      "link",
+                      "document"
+                    ]
+                  }
+                },
+                "required": [
+                  "title"
+                ],
+                "additionalProperties": false,
+                "description": "Tiêu đề chương ở đầu khung. Các cảnh liền nhau có cùng heading giữ nguyên tiêu đề, không chạy lại hiệu ứng."
+              },
+              "eyebrow": {
+                "description": "Dòng nhỏ trên tiêu đề, ví dụ \"01 — HẬU QUẢ\" để đánh số chương.",
+                "type": "string",
+                "maxLength": 30
+              },
+              "note": {
+                "description": "Chú thích nhỏ màu xám dưới nội dung, ví dụ \"Theo VnExpress, 3/11/2026\" hoặc \"* Ví dụ minh hoạ\".",
+                "type": "string",
+                "maxLength": 90
+              },
+              "narration": {
+                "description": "Lời đọc của riêng cảnh này. Độ dài cảnh lấy theo âm thanh thật nếu có.",
+                "type": "object",
+                "properties": {
+                  "text": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 320,
+                    "description": "Lời đọc của riêng cảnh. Dùng \"|\" để đánh dấu lúc từng phần tử hiện ra."
+                  }
+                },
+                "required": [
+                  "text"
+                ],
+                "additionalProperties": false
+              },
+              "seconds": {
+                "description": "Gợi ý thời lượng khi không có lời đọc. Có âm thanh thật thì bị ghi đè.",
+                "type": "number",
+                "minimum": 1.5,
+                "maximum": 15
+              },
+              "sfx": {
+                "default": [],
+                "maxItems": 2,
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "at": {
+                      "default": "start",
+                      "type": "string",
+                      "enum": [
+                        "start",
+                        "end"
+                      ]
+                    },
+                    "sound": {
+                      "type": "string",
+                      "enum": [
+                        "whoosh",
+                        "whip",
+                        "ding",
+                        "page-turn",
+                        "switch",
+                        "mouse-click",
+                        "shutter-modern"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "sound"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "transitionOut": {
+                "description": "Ghi đè chuyển cảnh mặc định khi rời cảnh này.",
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "default": "blur",
+                    "type": "string",
+                    "enum": [
+                      "blur",
+                      "fade",
+                      "slide",
+                      "wipe",
+                      "flip",
+                      "none"
+                    ]
+                  },
+                  "direction": {
+                    "description": "Chỉ dùng cho slide và wipe.",
+                    "type": "string",
+                    "enum": [
+                      "from-left",
+                      "from-right",
+                      "from-top",
+                      "from-bottom"
+                    ]
+                  },
+                  "durationFrames": {
+                    "default": 24,
+                    "description": "Số khung chồng giữa hai cảnh (blur: mờ ra ~1/3, nền trống, hiện vào ~1/2). Lời đọc cảnh sau chỉ bắt đầu khi hình đã hiện.",
+                    "type": "integer",
+                    "minimum": 6,
+                    "maximum": 36
+                  }
+                },
+                "additionalProperties": false
+              },
+              "kind": {
+                "type": "string",
+                "const": "bullets"
+              },
+              "title": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 48
+              },
+              "items": {
+                "minItems": 2,
+                "maxItems": 5,
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "text": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 72
+                    },
+                    "icon": {
+                      "type": "string",
+                      "enum": [
+                        "shield",
+                        "alert",
+                        "chip",
+                        "cloud",
+                        "server",
+                        "money",
+                        "people",
+                        "globe",
+                        "lock",
+                        "bolt",
+                        "chart",
+                        "clock",
+                        "check",
+                        "mail",
+                        "building",
+                        "factory",
+                        "robot",
+                        "thermometer",
+                        "link",
+                        "document"
+                      ]
+                    },
+                    "factId": {
+                      "type": "string",
+                      "pattern": "^[a-z][a-z0-9_-]{0,39}$",
+                      "description": "id của một fact có trong spec.facts."
+                    }
+                  },
+                  "required": [
+                    "text"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            },
+            "required": [
+              "id",
+              "kind",
+              "title",
+              "items"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "pattern": "^[a-z][a-z0-9_-]{0,39}$"
+              },
+              "heading": {
+                "type": "object",
+                "properties": {
+                  "title": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 32,
+                    "description": "Dòng 1 tiêu đề chương, chữ trắng. Ví dụ \"Agent\"."
+                  },
+                  "accent": {
+                    "description": "Dòng 2, màu nhấn. Ví dụ \"= đạo diễn\".",
+                    "type": "string",
+                    "maxLength": 32
+                  },
+                  "icon": {
+                    "type": "string",
+                    "enum": [
+                      "shield",
+                      "alert",
+                      "chip",
+                      "cloud",
+                      "server",
+                      "money",
+                      "people",
+                      "globe",
+                      "lock",
+                      "bolt",
+                      "chart",
+                      "clock",
+                      "check",
+                      "mail",
+                      "building",
+                      "factory",
+                      "robot",
+                      "thermometer",
+                      "link",
+                      "document"
+                    ]
+                  }
+                },
+                "required": [
+                  "title"
+                ],
+                "additionalProperties": false,
+                "description": "Tiêu đề chương ở đầu khung. Các cảnh liền nhau có cùng heading giữ nguyên tiêu đề, không chạy lại hiệu ứng."
+              },
+              "eyebrow": {
+                "description": "Dòng nhỏ trên tiêu đề, ví dụ \"01 — HẬU QUẢ\" để đánh số chương.",
+                "type": "string",
+                "maxLength": 30
+              },
+              "note": {
+                "description": "Chú thích nhỏ màu xám dưới nội dung, ví dụ \"Theo VnExpress, 3/11/2026\" hoặc \"* Ví dụ minh hoạ\".",
+                "type": "string",
+                "maxLength": 90
+              },
+              "narration": {
+                "description": "Lời đọc của riêng cảnh này. Độ dài cảnh lấy theo âm thanh thật nếu có.",
+                "type": "object",
+                "properties": {
+                  "text": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 320,
+                    "description": "Lời đọc của riêng cảnh. Dùng \"|\" để đánh dấu lúc từng phần tử hiện ra."
+                  }
+                },
+                "required": [
+                  "text"
+                ],
+                "additionalProperties": false
+              },
+              "seconds": {
+                "description": "Gợi ý thời lượng khi không có lời đọc. Có âm thanh thật thì bị ghi đè.",
+                "type": "number",
+                "minimum": 1.5,
+                "maximum": 15
+              },
+              "sfx": {
+                "default": [],
+                "maxItems": 2,
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "at": {
+                      "default": "start",
+                      "type": "string",
+                      "enum": [
+                        "start",
+                        "end"
+                      ]
+                    },
+                    "sound": {
+                      "type": "string",
+                      "enum": [
+                        "whoosh",
+                        "whip",
+                        "ding",
+                        "page-turn",
+                        "switch",
+                        "mouse-click",
+                        "shutter-modern"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "sound"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "transitionOut": {
+                "description": "Ghi đè chuyển cảnh mặc định khi rời cảnh này.",
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "default": "blur",
+                    "type": "string",
+                    "enum": [
+                      "blur",
+                      "fade",
+                      "slide",
+                      "wipe",
+                      "flip",
+                      "none"
+                    ]
+                  },
+                  "direction": {
+                    "description": "Chỉ dùng cho slide và wipe.",
+                    "type": "string",
+                    "enum": [
+                      "from-left",
+                      "from-right",
+                      "from-top",
+                      "from-bottom"
+                    ]
+                  },
+                  "durationFrames": {
+                    "default": 24,
+                    "description": "Số khung chồng giữa hai cảnh (blur: mờ ra ~1/3, nền trống, hiện vào ~1/2). Lời đọc cảnh sau chỉ bắt đầu khi hình đã hiện.",
+                    "type": "integer",
+                    "minimum": 6,
+                    "maximum": 36
+                  }
+                },
+                "additionalProperties": false
+              },
+              "kind": {
+                "type": "string",
+                "const": "process"
+              },
+              "title": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 48
+              },
+              "steps": {
+                "minItems": 2,
+                "maxItems": 6,
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "label": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 40
+                    },
+                    "detail": {
+                      "type": "string",
+                      "maxLength": 72
+                    }
+                  },
+                  "required": [
+                    "label"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "direction": {
+                "default": "down",
+                "type": "string",
+                "enum": [
+                  "down",
+                  "right"
+                ]
+              }
+            },
+            "required": [
+              "id",
+              "kind",
+              "title",
+              "steps"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "pattern": "^[a-z][a-z0-9_-]{0,39}$"
+              },
+              "heading": {
+                "type": "object",
+                "properties": {
+                  "title": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 32,
+                    "description": "Dòng 1 tiêu đề chương, chữ trắng. Ví dụ \"Agent\"."
+                  },
+                  "accent": {
+                    "description": "Dòng 2, màu nhấn. Ví dụ \"= đạo diễn\".",
+                    "type": "string",
+                    "maxLength": 32
+                  },
+                  "icon": {
+                    "type": "string",
+                    "enum": [
+                      "shield",
+                      "alert",
+                      "chip",
+                      "cloud",
+                      "server",
+                      "money",
+                      "people",
+                      "globe",
+                      "lock",
+                      "bolt",
+                      "chart",
+                      "clock",
+                      "check",
+                      "mail",
+                      "building",
+                      "factory",
+                      "robot",
+                      "thermometer",
+                      "link",
+                      "document"
+                    ]
+                  }
+                },
+                "required": [
+                  "title"
+                ],
+                "additionalProperties": false,
+                "description": "Tiêu đề chương ở đầu khung. Các cảnh liền nhau có cùng heading giữ nguyên tiêu đề, không chạy lại hiệu ứng."
+              },
+              "eyebrow": {
+                "description": "Dòng nhỏ trên tiêu đề, ví dụ \"01 — HẬU QUẢ\" để đánh số chương.",
+                "type": "string",
+                "maxLength": 30
+              },
+              "note": {
+                "description": "Chú thích nhỏ màu xám dưới nội dung, ví dụ \"Theo VnExpress, 3/11/2026\" hoặc \"* Ví dụ minh hoạ\".",
+                "type": "string",
+                "maxLength": 90
+              },
+              "narration": {
+                "description": "Lời đọc của riêng cảnh này. Độ dài cảnh lấy theo âm thanh thật nếu có.",
+                "type": "object",
+                "properties": {
+                  "text": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 320,
+                    "description": "Lời đọc của riêng cảnh. Dùng \"|\" để đánh dấu lúc từng phần tử hiện ra."
+                  }
+                },
+                "required": [
+                  "text"
+                ],
+                "additionalProperties": false
+              },
+              "seconds": {
+                "description": "Gợi ý thời lượng khi không có lời đọc. Có âm thanh thật thì bị ghi đè.",
+                "type": "number",
+                "minimum": 1.5,
+                "maximum": 15
+              },
+              "sfx": {
+                "default": [],
+                "maxItems": 2,
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "at": {
+                      "default": "start",
+                      "type": "string",
+                      "enum": [
+                        "start",
+                        "end"
+                      ]
+                    },
+                    "sound": {
+                      "type": "string",
+                      "enum": [
+                        "whoosh",
+                        "whip",
+                        "ding",
+                        "page-turn",
+                        "switch",
+                        "mouse-click",
+                        "shutter-modern"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "sound"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "transitionOut": {
+                "description": "Ghi đè chuyển cảnh mặc định khi rời cảnh này.",
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "default": "blur",
+                    "type": "string",
+                    "enum": [
+                      "blur",
+                      "fade",
+                      "slide",
+                      "wipe",
+                      "flip",
+                      "none"
+                    ]
+                  },
+                  "direction": {
+                    "description": "Chỉ dùng cho slide và wipe.",
+                    "type": "string",
+                    "enum": [
+                      "from-left",
+                      "from-right",
+                      "from-top",
+                      "from-bottom"
+                    ]
+                  },
+                  "durationFrames": {
+                    "default": 24,
+                    "description": "Số khung chồng giữa hai cảnh (blur: mờ ra ~1/3, nền trống, hiện vào ~1/2). Lời đọc cảnh sau chỉ bắt đầu khi hình đã hiện.",
+                    "type": "integer",
+                    "minimum": 6,
+                    "maximum": 36
+                  }
+                },
+                "additionalProperties": false
+              },
+              "kind": {
+                "type": "string",
+                "const": "map"
+              },
+              "label": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 48
+              },
+              "center": {
+                "type": "object",
+                "properties": {
+                  "lat": {
+                    "type": "number",
+                    "minimum": -90,
+                    "maximum": 90
+                  },
+                  "lng": {
+                    "type": "number",
+                    "minimum": -180,
+                    "maximum": 180
+                  }
+                },
+                "required": [
+                  "lat",
+                  "lng"
+                ],
+                "additionalProperties": false
+              },
+              "zoom": {
+                "default": 8,
+                "type": "number",
+                "minimum": 1,
+                "maximum": 16
+              },
+              "markers": {
+                "default": [],
+                "maxItems": 5,
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "lat": {
+                      "type": "number",
+                      "minimum": -90,
+                      "maximum": 90
+                    },
+                    "lng": {
+                      "type": "number",
+                      "minimum": -180,
+                      "maximum": 180
+                    },
+                    "label": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 32
+                    }
+                  },
+                  "required": [
+                    "lat",
+                    "lng",
+                    "label"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "provider": {
+                "default": "static",
+                "description": "maptiler cần khóa API; static dùng ảnh bản đồ đã có trong assets.",
+                "type": "string",
+                "enum": [
+                  "maptiler",
+                  "static"
+                ]
+              },
+              "assetId": {
+                "description": "Bản đồ tĩnh (khi provider=static).",
+                "type": "string",
+                "pattern": "^[a-z][a-z0-9_-]{0,39}$"
+              }
+            },
+            "required": [
+              "id",
+              "kind",
+              "label",
+              "center"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "pattern": "^[a-z][a-z0-9_-]{0,39}$"
+              },
+              "heading": {
+                "type": "object",
+                "properties": {
+                  "title": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 32,
+                    "description": "Dòng 1 tiêu đề chương, chữ trắng. Ví dụ \"Agent\"."
+                  },
+                  "accent": {
+                    "description": "Dòng 2, màu nhấn. Ví dụ \"= đạo diễn\".",
+                    "type": "string",
+                    "maxLength": 32
+                  },
+                  "icon": {
+                    "type": "string",
+                    "enum": [
+                      "shield",
+                      "alert",
+                      "chip",
+                      "cloud",
+                      "server",
+                      "money",
+                      "people",
+                      "globe",
+                      "lock",
+                      "bolt",
+                      "chart",
+                      "clock",
+                      "check",
+                      "mail",
+                      "building",
+                      "factory",
+                      "robot",
+                      "thermometer",
+                      "link",
+                      "document"
+                    ]
+                  }
+                },
+                "required": [
+                  "title"
+                ],
+                "additionalProperties": false,
+                "description": "Tiêu đề chương ở đầu khung. Các cảnh liền nhau có cùng heading giữ nguyên tiêu đề, không chạy lại hiệu ứng."
+              },
+              "eyebrow": {
+                "description": "Dòng nhỏ trên tiêu đề, ví dụ \"01 — HẬU QUẢ\" để đánh số chương.",
+                "type": "string",
+                "maxLength": 30
+              },
+              "note": {
+                "description": "Chú thích nhỏ màu xám dưới nội dung, ví dụ \"Theo VnExpress, 3/11/2026\" hoặc \"* Ví dụ minh hoạ\".",
+                "type": "string",
+                "maxLength": 90
+              },
+              "narration": {
+                "description": "Lời đọc của riêng cảnh này. Độ dài cảnh lấy theo âm thanh thật nếu có.",
+                "type": "object",
+                "properties": {
+                  "text": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 320,
+                    "description": "Lời đọc của riêng cảnh. Dùng \"|\" để đánh dấu lúc từng phần tử hiện ra."
+                  }
+                },
+                "required": [
+                  "text"
+                ],
+                "additionalProperties": false
+              },
+              "seconds": {
+                "description": "Gợi ý thời lượng khi không có lời đọc. Có âm thanh thật thì bị ghi đè.",
+                "type": "number",
+                "minimum": 1.5,
+                "maximum": 15
+              },
+              "sfx": {
+                "default": [],
+                "maxItems": 2,
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "at": {
+                      "default": "start",
+                      "type": "string",
+                      "enum": [
+                        "start",
+                        "end"
+                      ]
+                    },
+                    "sound": {
+                      "type": "string",
+                      "enum": [
+                        "whoosh",
+                        "whip",
+                        "ding",
+                        "page-turn",
+                        "switch",
+                        "mouse-click",
+                        "shutter-modern"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "sound"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "transitionOut": {
+                "description": "Ghi đè chuyển cảnh mặc định khi rời cảnh này.",
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "default": "blur",
+                    "type": "string",
+                    "enum": [
+                      "blur",
+                      "fade",
+                      "slide",
+                      "wipe",
+                      "flip",
+                      "none"
+                    ]
+                  },
+                  "direction": {
+                    "description": "Chỉ dùng cho slide và wipe.",
+                    "type": "string",
+                    "enum": [
+                      "from-left",
+                      "from-right",
+                      "from-top",
+                      "from-bottom"
+                    ]
+                  },
+                  "durationFrames": {
+                    "default": 24,
+                    "description": "Số khung chồng giữa hai cảnh (blur: mờ ra ~1/3, nền trống, hiện vào ~1/2). Lời đọc cảnh sau chỉ bắt đầu khi hình đã hiện.",
+                    "type": "integer",
+                    "minimum": 6,
+                    "maximum": 36
+                  }
+                },
+                "additionalProperties": false
+              },
+              "kind": {
+                "type": "string",
+                "const": "photo"
+              },
+              "assetId": {
+                "type": "string",
+                "pattern": "^[a-z][a-z0-9_-]{0,39}$",
+                "description": "id trong spec.assets. Phải có giấy phép dùng thương mại."
+              },
+              "motion": {
+                "default": "zoom-in",
+                "type": "string",
+                "enum": [
+                  "zoom-in",
+                  "zoom-out",
+                  "pan-left",
+                  "pan-right",
+                  "still"
+                ]
+              },
+              "caption": {
+                "type": "string",
+                "maxLength": 80
+              },
+              "credit": {
+                "default": true,
+                "description": "Hiện dòng ghi nguồn ảnh nếu giấy phép yêu cầu.",
+                "type": "boolean"
+              }
+            },
+            "required": [
+              "id",
+              "kind",
+              "assetId"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "pattern": "^[a-z][a-z0-9_-]{0,39}$"
+              },
+              "heading": {
+                "type": "object",
+                "properties": {
+                  "title": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 32,
+                    "description": "Dòng 1 tiêu đề chương, chữ trắng. Ví dụ \"Agent\"."
+                  },
+                  "accent": {
+                    "description": "Dòng 2, màu nhấn. Ví dụ \"= đạo diễn\".",
+                    "type": "string",
+                    "maxLength": 32
+                  },
+                  "icon": {
+                    "type": "string",
+                    "enum": [
+                      "shield",
+                      "alert",
+                      "chip",
+                      "cloud",
+                      "server",
+                      "money",
+                      "people",
+                      "globe",
+                      "lock",
+                      "bolt",
+                      "chart",
+                      "clock",
+                      "check",
+                      "mail",
+                      "building",
+                      "factory",
+                      "robot",
+                      "thermometer",
+                      "link",
+                      "document"
+                    ]
+                  }
+                },
+                "required": [
+                  "title"
+                ],
+                "additionalProperties": false,
+                "description": "Tiêu đề chương ở đầu khung. Các cảnh liền nhau có cùng heading giữ nguyên tiêu đề, không chạy lại hiệu ứng."
+              },
+              "eyebrow": {
+                "description": "Dòng nhỏ trên tiêu đề, ví dụ \"01 — HẬU QUẢ\" để đánh số chương.",
+                "type": "string",
+                "maxLength": 30
+              },
+              "note": {
+                "description": "Chú thích nhỏ màu xám dưới nội dung, ví dụ \"Theo VnExpress, 3/11/2026\" hoặc \"* Ví dụ minh hoạ\".",
+                "type": "string",
+                "maxLength": 90
+              },
+              "narration": {
+                "description": "Lời đọc của riêng cảnh này. Độ dài cảnh lấy theo âm thanh thật nếu có.",
+                "type": "object",
+                "properties": {
+                  "text": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 320,
+                    "description": "Lời đọc của riêng cảnh. Dùng \"|\" để đánh dấu lúc từng phần tử hiện ra."
+                  }
+                },
+                "required": [
+                  "text"
+                ],
+                "additionalProperties": false
+              },
+              "seconds": {
+                "description": "Gợi ý thời lượng khi không có lời đọc. Có âm thanh thật thì bị ghi đè.",
+                "type": "number",
+                "minimum": 1.5,
+                "maximum": 15
+              },
+              "sfx": {
+                "default": [],
+                "maxItems": 2,
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "at": {
+                      "default": "start",
+                      "type": "string",
+                      "enum": [
+                        "start",
+                        "end"
+                      ]
+                    },
+                    "sound": {
+                      "type": "string",
+                      "enum": [
+                        "whoosh",
+                        "whip",
+                        "ding",
+                        "page-turn",
+                        "switch",
+                        "mouse-click",
+                        "shutter-modern"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "sound"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "transitionOut": {
+                "description": "Ghi đè chuyển cảnh mặc định khi rời cảnh này.",
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "default": "blur",
+                    "type": "string",
+                    "enum": [
+                      "blur",
+                      "fade",
+                      "slide",
+                      "wipe",
+                      "flip",
+                      "none"
+                    ]
+                  },
+                  "direction": {
+                    "description": "Chỉ dùng cho slide và wipe.",
+                    "type": "string",
+                    "enum": [
+                      "from-left",
+                      "from-right",
+                      "from-top",
+                      "from-bottom"
+                    ]
+                  },
+                  "durationFrames": {
+                    "default": 24,
+                    "description": "Số khung chồng giữa hai cảnh (blur: mờ ra ~1/3, nền trống, hiện vào ~1/2). Lời đọc cảnh sau chỉ bắt đầu khi hình đã hiện.",
+                    "type": "integer",
+                    "minimum": 6,
+                    "maximum": 36
+                  }
+                },
+                "additionalProperties": false
+              },
+              "kind": {
+                "type": "string",
+                "const": "cards"
+              },
+              "items": {
+                "minItems": 2,
+                "maxItems": 4,
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "factId": {
+                      "type": "string",
+                      "pattern": "^[a-z][a-z0-9_-]{0,39}$",
+                      "description": "Fact dạng number."
+                    },
+                    "label": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 40
+                    },
+                    "tone": {
+                      "type": "string",
+                      "enum": [
+                        "accent",
+                        "gold",
+                        "violet",
+                        "mint"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "factId",
+                    "label"
+                  ],
+                  "additionalProperties": false
+                },
+                "description": "Các thẻ số liệu xếp chồng, mỗi thẻ một con số đếm lên. Màu viền tự xoay vòng nếu không chỉ định."
+              },
+              "display": {
+                "default": "compact",
+                "type": "string",
+                "enum": [
+                  "full",
+                  "compact"
+                ]
+              }
+            },
+            "required": [
+              "id",
+              "kind",
+              "items"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "pattern": "^[a-z][a-z0-9_-]{0,39}$"
+              },
+              "heading": {
+                "type": "object",
+                "properties": {
+                  "title": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 32,
+                    "description": "Dòng 1 tiêu đề chương, chữ trắng. Ví dụ \"Agent\"."
+                  },
+                  "accent": {
+                    "description": "Dòng 2, màu nhấn. Ví dụ \"= đạo diễn\".",
+                    "type": "string",
+                    "maxLength": 32
+                  },
+                  "icon": {
+                    "type": "string",
+                    "enum": [
+                      "shield",
+                      "alert",
+                      "chip",
+                      "cloud",
+                      "server",
+                      "money",
+                      "people",
+                      "globe",
+                      "lock",
+                      "bolt",
+                      "chart",
+                      "clock",
+                      "check",
+                      "mail",
+                      "building",
+                      "factory",
+                      "robot",
+                      "thermometer",
+                      "link",
+                      "document"
+                    ]
+                  }
+                },
+                "required": [
+                  "title"
+                ],
+                "additionalProperties": false,
+                "description": "Tiêu đề chương ở đầu khung. Các cảnh liền nhau có cùng heading giữ nguyên tiêu đề, không chạy lại hiệu ứng."
+              },
+              "eyebrow": {
+                "description": "Dòng nhỏ trên tiêu đề, ví dụ \"01 — HẬU QUẢ\" để đánh số chương.",
+                "type": "string",
+                "maxLength": 30
+              },
+              "note": {
+                "description": "Chú thích nhỏ màu xám dưới nội dung, ví dụ \"Theo VnExpress, 3/11/2026\" hoặc \"* Ví dụ minh hoạ\".",
+                "type": "string",
+                "maxLength": 90
+              },
+              "narration": {
+                "description": "Lời đọc của riêng cảnh này. Độ dài cảnh lấy theo âm thanh thật nếu có.",
+                "type": "object",
+                "properties": {
+                  "text": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 320,
+                    "description": "Lời đọc của riêng cảnh. Dùng \"|\" để đánh dấu lúc từng phần tử hiện ra."
+                  }
+                },
+                "required": [
+                  "text"
+                ],
+                "additionalProperties": false
+              },
+              "seconds": {
+                "description": "Gợi ý thời lượng khi không có lời đọc. Có âm thanh thật thì bị ghi đè.",
+                "type": "number",
+                "minimum": 1.5,
+                "maximum": 15
+              },
+              "sfx": {
+                "default": [],
+                "maxItems": 2,
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "at": {
+                      "default": "start",
+                      "type": "string",
+                      "enum": [
+                        "start",
+                        "end"
+                      ]
+                    },
+                    "sound": {
+                      "type": "string",
+                      "enum": [
+                        "whoosh",
+                        "whip",
+                        "ding",
+                        "page-turn",
+                        "switch",
+                        "mouse-click",
+                        "shutter-modern"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "sound"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "transitionOut": {
+                "description": "Ghi đè chuyển cảnh mặc định khi rời cảnh này.",
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "default": "blur",
+                    "type": "string",
+                    "enum": [
+                      "blur",
+                      "fade",
+                      "slide",
+                      "wipe",
+                      "flip",
+                      "none"
+                    ]
+                  },
+                  "direction": {
+                    "description": "Chỉ dùng cho slide và wipe.",
+                    "type": "string",
+                    "enum": [
+                      "from-left",
+                      "from-right",
+                      "from-top",
+                      "from-bottom"
+                    ]
+                  },
+                  "durationFrames": {
+                    "default": 24,
+                    "description": "Số khung chồng giữa hai cảnh (blur: mờ ra ~1/3, nền trống, hiện vào ~1/2). Lời đọc cảnh sau chỉ bắt đầu khi hình đã hiện.",
+                    "type": "integer",
+                    "minimum": 6,
+                    "maximum": 36
+                  }
+                },
+                "additionalProperties": false
+              },
+              "kind": {
+                "type": "string",
+                "const": "checklist"
+              },
+              "items": {
+                "minItems": 3,
+                "maxItems": 8,
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "text": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 40
+                    },
+                    "icon": {
+                      "type": "string",
+                      "enum": [
+                        "shield",
+                        "alert",
+                        "chip",
+                        "cloud",
+                        "server",
+                        "money",
+                        "people",
+                        "globe",
+                        "lock",
+                        "bolt",
+                        "chart",
+                        "clock",
+                        "check",
+                        "mail",
+                        "building",
+                        "factory",
+                        "robot",
+                        "thermometer",
+                        "link",
+                        "document"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "text"
+                  ],
+                  "additionalProperties": false
+                },
+                "description": "Các bước được đánh dấu xong lần lượt, bước đang nói được làm nổi."
+              }
+            },
+            "required": [
+              "id",
+              "kind",
+              "items"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "pattern": "^[a-z][a-z0-9_-]{0,39}$"
+              },
+              "heading": {
+                "type": "object",
+                "properties": {
+                  "title": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 32,
+                    "description": "Dòng 1 tiêu đề chương, chữ trắng. Ví dụ \"Agent\"."
+                  },
+                  "accent": {
+                    "description": "Dòng 2, màu nhấn. Ví dụ \"= đạo diễn\".",
+                    "type": "string",
+                    "maxLength": 32
+                  },
+                  "icon": {
+                    "type": "string",
+                    "enum": [
+                      "shield",
+                      "alert",
+                      "chip",
+                      "cloud",
+                      "server",
+                      "money",
+                      "people",
+                      "globe",
+                      "lock",
+                      "bolt",
+                      "chart",
+                      "clock",
+                      "check",
+                      "mail",
+                      "building",
+                      "factory",
+                      "robot",
+                      "thermometer",
+                      "link",
+                      "document"
+                    ]
+                  }
+                },
+                "required": [
+                  "title"
+                ],
+                "additionalProperties": false,
+                "description": "Tiêu đề chương ở đầu khung. Các cảnh liền nhau có cùng heading giữ nguyên tiêu đề, không chạy lại hiệu ứng."
+              },
+              "eyebrow": {
+                "description": "Dòng nhỏ trên tiêu đề, ví dụ \"01 — HẬU QUẢ\" để đánh số chương.",
+                "type": "string",
+                "maxLength": 30
+              },
+              "note": {
+                "description": "Chú thích nhỏ màu xám dưới nội dung, ví dụ \"Theo VnExpress, 3/11/2026\" hoặc \"* Ví dụ minh hoạ\".",
+                "type": "string",
+                "maxLength": 90
+              },
+              "narration": {
+                "description": "Lời đọc của riêng cảnh này. Độ dài cảnh lấy theo âm thanh thật nếu có.",
+                "type": "object",
+                "properties": {
+                  "text": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 320,
+                    "description": "Lời đọc của riêng cảnh. Dùng \"|\" để đánh dấu lúc từng phần tử hiện ra."
+                  }
+                },
+                "required": [
+                  "text"
+                ],
+                "additionalProperties": false
+              },
+              "seconds": {
+                "description": "Gợi ý thời lượng khi không có lời đọc. Có âm thanh thật thì bị ghi đè.",
+                "type": "number",
+                "minimum": 1.5,
+                "maximum": 15
+              },
+              "sfx": {
+                "default": [],
+                "maxItems": 2,
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "at": {
+                      "default": "start",
+                      "type": "string",
+                      "enum": [
+                        "start",
+                        "end"
+                      ]
+                    },
+                    "sound": {
+                      "type": "string",
+                      "enum": [
+                        "whoosh",
+                        "whip",
+                        "ding",
+                        "page-turn",
+                        "switch",
+                        "mouse-click",
+                        "shutter-modern"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "sound"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "transitionOut": {
+                "description": "Ghi đè chuyển cảnh mặc định khi rời cảnh này.",
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "default": "blur",
+                    "type": "string",
+                    "enum": [
+                      "blur",
+                      "fade",
+                      "slide",
+                      "wipe",
+                      "flip",
+                      "none"
+                    ]
+                  },
+                  "direction": {
+                    "description": "Chỉ dùng cho slide và wipe.",
+                    "type": "string",
+                    "enum": [
+                      "from-left",
+                      "from-right",
+                      "from-top",
+                      "from-bottom"
+                    ]
+                  },
+                  "durationFrames": {
+                    "default": 24,
+                    "description": "Số khung chồng giữa hai cảnh (blur: mờ ra ~1/3, nền trống, hiện vào ~1/2). Lời đọc cảnh sau chỉ bắt đầu khi hình đã hiện.",
+                    "type": "integer",
+                    "minimum": 6,
+                    "maximum": 36
+                  }
+                },
+                "additionalProperties": false
+              },
+              "kind": {
+                "type": "string",
+                "const": "concept"
+              },
+              "chips": {
+                "minItems": 3,
+                "maxItems": 7,
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "text": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 24
+                    },
+                    "icon": {
+                      "type": "string",
+                      "enum": [
+                        "shield",
+                        "alert",
+                        "chip",
+                        "cloud",
+                        "server",
+                        "money",
+                        "people",
+                        "globe",
+                        "lock",
+                        "bolt",
+                        "chart",
+                        "clock",
+                        "check",
+                        "mail",
+                        "building",
+                        "factory",
+                        "robot",
+                        "thermometer",
+                        "link",
+                        "document"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "text"
+                  ],
+                  "additionalProperties": false
+                },
+                "description": "Các khái niệm bay quanh tâm."
+              },
+              "result": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 48,
+                "description": "Câu kết quả hiện ra khi các chip gộp lại, ví dụ \"= một hệ thống điều khiển từ xa\"."
+              },
+              "icon": {
+                "type": "string",
+                "enum": [
+                  "shield",
+                  "alert",
+                  "chip",
+                  "cloud",
+                  "server",
+                  "money",
+                  "people",
+                  "globe",
+                  "lock",
+                  "bolt",
+                  "chart",
+                  "clock",
+                  "check",
+                  "mail",
+                  "building",
+                  "factory",
+                  "robot",
+                  "thermometer",
+                  "link",
+                  "document"
+                ]
+              }
+            },
+            "required": [
+              "id",
+              "kind",
+              "chips",
+              "result"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "pattern": "^[a-z][a-z0-9_-]{0,39}$"
+              },
+              "heading": {
+                "type": "object",
+                "properties": {
+                  "title": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 32,
+                    "description": "Dòng 1 tiêu đề chương, chữ trắng. Ví dụ \"Agent\"."
+                  },
+                  "accent": {
+                    "description": "Dòng 2, màu nhấn. Ví dụ \"= đạo diễn\".",
+                    "type": "string",
+                    "maxLength": 32
+                  },
+                  "icon": {
+                    "type": "string",
+                    "enum": [
+                      "shield",
+                      "alert",
+                      "chip",
+                      "cloud",
+                      "server",
+                      "money",
+                      "people",
+                      "globe",
+                      "lock",
+                      "bolt",
+                      "chart",
+                      "clock",
+                      "check",
+                      "mail",
+                      "building",
+                      "factory",
+                      "robot",
+                      "thermometer",
+                      "link",
+                      "document"
+                    ]
+                  }
+                },
+                "required": [
+                  "title"
+                ],
+                "additionalProperties": false,
+                "description": "Tiêu đề chương ở đầu khung. Các cảnh liền nhau có cùng heading giữ nguyên tiêu đề, không chạy lại hiệu ứng."
+              },
+              "eyebrow": {
+                "description": "Dòng nhỏ trên tiêu đề, ví dụ \"01 — HẬU QUẢ\" để đánh số chương.",
+                "type": "string",
+                "maxLength": 30
+              },
+              "note": {
+                "description": "Chú thích nhỏ màu xám dưới nội dung, ví dụ \"Theo VnExpress, 3/11/2026\" hoặc \"* Ví dụ minh hoạ\".",
+                "type": "string",
+                "maxLength": 90
+              },
+              "narration": {
+                "description": "Lời đọc của riêng cảnh này. Độ dài cảnh lấy theo âm thanh thật nếu có.",
+                "type": "object",
+                "properties": {
+                  "text": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 320,
+                    "description": "Lời đọc của riêng cảnh. Dùng \"|\" để đánh dấu lúc từng phần tử hiện ra."
+                  }
+                },
+                "required": [
+                  "text"
+                ],
+                "additionalProperties": false
+              },
+              "seconds": {
+                "description": "Gợi ý thời lượng khi không có lời đọc. Có âm thanh thật thì bị ghi đè.",
+                "type": "number",
+                "minimum": 1.5,
+                "maximum": 15
+              },
+              "sfx": {
+                "default": [],
+                "maxItems": 2,
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "at": {
+                      "default": "start",
+                      "type": "string",
+                      "enum": [
+                        "start",
+                        "end"
+                      ]
+                    },
+                    "sound": {
+                      "type": "string",
+                      "enum": [
+                        "whoosh",
+                        "whip",
+                        "ding",
+                        "page-turn",
+                        "switch",
+                        "mouse-click",
+                        "shutter-modern"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "sound"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "transitionOut": {
+                "description": "Ghi đè chuyển cảnh mặc định khi rời cảnh này.",
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "default": "blur",
+                    "type": "string",
+                    "enum": [
+                      "blur",
+                      "fade",
+                      "slide",
+                      "wipe",
+                      "flip",
+                      "none"
+                    ]
+                  },
+                  "direction": {
+                    "description": "Chỉ dùng cho slide và wipe.",
+                    "type": "string",
+                    "enum": [
+                      "from-left",
+                      "from-right",
+                      "from-top",
+                      "from-bottom"
+                    ]
+                  },
+                  "durationFrames": {
+                    "default": 24,
+                    "description": "Số khung chồng giữa hai cảnh (blur: mờ ra ~1/3, nền trống, hiện vào ~1/2). Lời đọc cảnh sau chỉ bắt đầu khi hình đã hiện.",
+                    "type": "integer",
+                    "minimum": 6,
+                    "maximum": 36
+                  }
+                },
+                "additionalProperties": false
+              },
+              "kind": {
+                "type": "string",
+                "const": "recap"
+              },
+              "items": {
+                "minItems": 2,
+                "maxItems": 5,
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "text": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 56
+                    },
+                    "icon": {
+                      "type": "string",
+                      "enum": [
+                        "shield",
+                        "alert",
+                        "chip",
+                        "cloud",
+                        "server",
+                        "money",
+                        "people",
+                        "globe",
+                        "lock",
+                        "bolt",
+                        "chart",
+                        "clock",
+                        "check",
+                        "mail",
+                        "building",
+                        "factory",
+                        "robot",
+                        "thermometer",
+                        "link",
+                        "document"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "text"
+                  ],
+                  "additionalProperties": false
+                },
+                "description": "Tóm tắt \"lưu lại\" cuối video."
+              }
+            },
+            "required": [
+              "id",
+              "kind",
+              "items"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "pattern": "^[a-z][a-z0-9_-]{0,39}$"
+              },
+              "heading": {
+                "type": "object",
+                "properties": {
+                  "title": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 32,
+                    "description": "Dòng 1 tiêu đề chương, chữ trắng. Ví dụ \"Agent\"."
+                  },
+                  "accent": {
+                    "description": "Dòng 2, màu nhấn. Ví dụ \"= đạo diễn\".",
+                    "type": "string",
+                    "maxLength": 32
+                  },
+                  "icon": {
+                    "type": "string",
+                    "enum": [
+                      "shield",
+                      "alert",
+                      "chip",
+                      "cloud",
+                      "server",
+                      "money",
+                      "people",
+                      "globe",
+                      "lock",
+                      "bolt",
+                      "chart",
+                      "clock",
+                      "check",
+                      "mail",
+                      "building",
+                      "factory",
+                      "robot",
+                      "thermometer",
+                      "link",
+                      "document"
+                    ]
+                  }
+                },
+                "required": [
+                  "title"
+                ],
+                "additionalProperties": false,
+                "description": "Tiêu đề chương ở đầu khung. Các cảnh liền nhau có cùng heading giữ nguyên tiêu đề, không chạy lại hiệu ứng."
+              },
+              "eyebrow": {
+                "description": "Dòng nhỏ trên tiêu đề, ví dụ \"01 — HẬU QUẢ\" để đánh số chương.",
+                "type": "string",
+                "maxLength": 30
+              },
+              "note": {
+                "description": "Chú thích nhỏ màu xám dưới nội dung, ví dụ \"Theo VnExpress, 3/11/2026\" hoặc \"* Ví dụ minh hoạ\".",
+                "type": "string",
+                "maxLength": 90
+              },
+              "narration": {
+                "description": "Lời đọc của riêng cảnh này. Độ dài cảnh lấy theo âm thanh thật nếu có.",
+                "type": "object",
+                "properties": {
+                  "text": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 320,
+                    "description": "Lời đọc của riêng cảnh. Dùng \"|\" để đánh dấu lúc từng phần tử hiện ra."
+                  }
+                },
+                "required": [
+                  "text"
+                ],
+                "additionalProperties": false
+              },
+              "seconds": {
+                "description": "Gợi ý thời lượng khi không có lời đọc. Có âm thanh thật thì bị ghi đè.",
+                "type": "number",
+                "minimum": 1.5,
+                "maximum": 15
+              },
+              "sfx": {
+                "default": [],
+                "maxItems": 2,
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "at": {
+                      "default": "start",
+                      "type": "string",
+                      "enum": [
+                        "start",
+                        "end"
+                      ]
+                    },
+                    "sound": {
+                      "type": "string",
+                      "enum": [
+                        "whoosh",
+                        "whip",
+                        "ding",
+                        "page-turn",
+                        "switch",
+                        "mouse-click",
+                        "shutter-modern"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "sound"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "transitionOut": {
+                "description": "Ghi đè chuyển cảnh mặc định khi rời cảnh này.",
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "default": "blur",
+                    "type": "string",
+                    "enum": [
+                      "blur",
+                      "fade",
+                      "slide",
+                      "wipe",
+                      "flip",
+                      "none"
+                    ]
+                  },
+                  "direction": {
+                    "description": "Chỉ dùng cho slide và wipe.",
+                    "type": "string",
+                    "enum": [
+                      "from-left",
+                      "from-right",
+                      "from-top",
+                      "from-bottom"
+                    ]
+                  },
+                  "durationFrames": {
+                    "default": 24,
+                    "description": "Số khung chồng giữa hai cảnh (blur: mờ ra ~1/3, nền trống, hiện vào ~1/2). Lời đọc cảnh sau chỉ bắt đầu khi hình đã hiện.",
+                    "type": "integer",
+                    "minimum": 6,
+                    "maximum": 36
+                  }
+                },
+                "additionalProperties": false
+              },
+              "kind": {
+                "type": "string",
+                "const": "alert"
+              },
+              "level": {
+                "default": "warning",
+                "type": "string",
+                "enum": [
+                  "warning",
+                  "critical"
+                ]
+              },
+              "factId": {
+                "description": "Fact dạng claim làm căn cứ cho cảnh báo.",
+                "type": "string",
+                "pattern": "^[a-z][a-z0-9_-]{0,39}$"
+              },
+              "title": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 48
+              },
+              "points": {
+                "minItems": 1,
+                "maxItems": 3,
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 72
+                }
+              }
+            },
+            "required": [
+              "id",
+              "kind",
+              "title",
+              "points"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "pattern": "^[a-z][a-z0-9_-]{0,39}$"
+              },
+              "heading": {
+                "type": "object",
+                "properties": {
+                  "title": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 32,
+                    "description": "Dòng 1 tiêu đề chương, chữ trắng. Ví dụ \"Agent\"."
+                  },
+                  "accent": {
+                    "description": "Dòng 2, màu nhấn. Ví dụ \"= đạo diễn\".",
+                    "type": "string",
+                    "maxLength": 32
+                  },
+                  "icon": {
+                    "type": "string",
+                    "enum": [
+                      "shield",
+                      "alert",
+                      "chip",
+                      "cloud",
+                      "server",
+                      "money",
+                      "people",
+                      "globe",
+                      "lock",
+                      "bolt",
+                      "chart",
+                      "clock",
+                      "check",
+                      "mail",
+                      "building",
+                      "factory",
+                      "robot",
+                      "thermometer",
+                      "link",
+                      "document"
+                    ]
+                  }
+                },
+                "required": [
+                  "title"
+                ],
+                "additionalProperties": false,
+                "description": "Tiêu đề chương ở đầu khung. Các cảnh liền nhau có cùng heading giữ nguyên tiêu đề, không chạy lại hiệu ứng."
+              },
+              "eyebrow": {
+                "description": "Dòng nhỏ trên tiêu đề, ví dụ \"01 — HẬU QUẢ\" để đánh số chương.",
+                "type": "string",
+                "maxLength": 30
+              },
+              "note": {
+                "description": "Chú thích nhỏ màu xám dưới nội dung, ví dụ \"Theo VnExpress, 3/11/2026\" hoặc \"* Ví dụ minh hoạ\".",
+                "type": "string",
+                "maxLength": 90
+              },
+              "narration": {
+                "description": "Lời đọc của riêng cảnh này. Độ dài cảnh lấy theo âm thanh thật nếu có.",
+                "type": "object",
+                "properties": {
+                  "text": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 320,
+                    "description": "Lời đọc của riêng cảnh. Dùng \"|\" để đánh dấu lúc từng phần tử hiện ra."
+                  }
+                },
+                "required": [
+                  "text"
+                ],
+                "additionalProperties": false
+              },
+              "seconds": {
+                "description": "Gợi ý thời lượng khi không có lời đọc. Có âm thanh thật thì bị ghi đè.",
+                "type": "number",
+                "minimum": 1.5,
+                "maximum": 15
+              },
+              "sfx": {
+                "default": [],
+                "maxItems": 2,
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "at": {
+                      "default": "start",
+                      "type": "string",
+                      "enum": [
+                        "start",
+                        "end"
+                      ]
+                    },
+                    "sound": {
+                      "type": "string",
+                      "enum": [
+                        "whoosh",
+                        "whip",
+                        "ding",
+                        "page-turn",
+                        "switch",
+                        "mouse-click",
+                        "shutter-modern"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "sound"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "transitionOut": {
+                "description": "Ghi đè chuyển cảnh mặc định khi rời cảnh này.",
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "default": "blur",
+                    "type": "string",
+                    "enum": [
+                      "blur",
+                      "fade",
+                      "slide",
+                      "wipe",
+                      "flip",
+                      "none"
+                    ]
+                  },
+                  "direction": {
+                    "description": "Chỉ dùng cho slide và wipe.",
+                    "type": "string",
+                    "enum": [
+                      "from-left",
+                      "from-right",
+                      "from-top",
+                      "from-bottom"
+                    ]
+                  },
+                  "durationFrames": {
+                    "default": 24,
+                    "description": "Số khung chồng giữa hai cảnh (blur: mờ ra ~1/3, nền trống, hiện vào ~1/2). Lời đọc cảnh sau chỉ bắt đầu khi hình đã hiện.",
+                    "type": "integer",
+                    "minimum": 6,
+                    "maximum": 36
+                  }
+                },
+                "additionalProperties": false
+              },
+              "kind": {
+                "type": "string",
+                "const": "source"
+              },
+              "factId": {
+                "description": "Fact dạng date: ngày công bố của số liệu.",
+                "type": "string",
+                "pattern": "^[a-z][a-z0-9_-]{0,39}$"
+              }
+            },
+            "required": [
+              "id",
+              "kind"
+            ],
+            "additionalProperties": false,
+            "description": "Thẻ nguồn: tên báo, tiêu đề, ngày. Lấy từ spec.source. Bắt buộc có ít nhất một cảnh này."
+          },
+          {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "pattern": "^[a-z][a-z0-9_-]{0,39}$"
+              },
+              "heading": {
+                "type": "object",
+                "properties": {
+                  "title": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 32,
+                    "description": "Dòng 1 tiêu đề chương, chữ trắng. Ví dụ \"Agent\"."
+                  },
+                  "accent": {
+                    "description": "Dòng 2, màu nhấn. Ví dụ \"= đạo diễn\".",
+                    "type": "string",
+                    "maxLength": 32
+                  },
+                  "icon": {
+                    "type": "string",
+                    "enum": [
+                      "shield",
+                      "alert",
+                      "chip",
+                      "cloud",
+                      "server",
+                      "money",
+                      "people",
+                      "globe",
+                      "lock",
+                      "bolt",
+                      "chart",
+                      "clock",
+                      "check",
+                      "mail",
+                      "building",
+                      "factory",
+                      "robot",
+                      "thermometer",
+                      "link",
+                      "document"
+                    ]
+                  }
+                },
+                "required": [
+                  "title"
+                ],
+                "additionalProperties": false,
+                "description": "Tiêu đề chương ở đầu khung. Các cảnh liền nhau có cùng heading giữ nguyên tiêu đề, không chạy lại hiệu ứng."
+              },
+              "eyebrow": {
+                "description": "Dòng nhỏ trên tiêu đề, ví dụ \"01 — HẬU QUẢ\" để đánh số chương.",
+                "type": "string",
+                "maxLength": 30
+              },
+              "note": {
+                "description": "Chú thích nhỏ màu xám dưới nội dung, ví dụ \"Theo VnExpress, 3/11/2026\" hoặc \"* Ví dụ minh hoạ\".",
+                "type": "string",
+                "maxLength": 90
+              },
+              "narration": {
+                "description": "Lời đọc của riêng cảnh này. Độ dài cảnh lấy theo âm thanh thật nếu có.",
+                "type": "object",
+                "properties": {
+                  "text": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 320,
+                    "description": "Lời đọc của riêng cảnh. Dùng \"|\" để đánh dấu lúc từng phần tử hiện ra."
+                  }
+                },
+                "required": [
+                  "text"
+                ],
+                "additionalProperties": false
+              },
+              "seconds": {
+                "description": "Gợi ý thời lượng khi không có lời đọc. Có âm thanh thật thì bị ghi đè.",
+                "type": "number",
+                "minimum": 1.5,
+                "maximum": 15
+              },
+              "sfx": {
+                "default": [],
+                "maxItems": 2,
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "at": {
+                      "default": "start",
+                      "type": "string",
+                      "enum": [
+                        "start",
+                        "end"
+                      ]
+                    },
+                    "sound": {
+                      "type": "string",
+                      "enum": [
+                        "whoosh",
+                        "whip",
+                        "ding",
+                        "page-turn",
+                        "switch",
+                        "mouse-click",
+                        "shutter-modern"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "sound"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "transitionOut": {
+                "description": "Ghi đè chuyển cảnh mặc định khi rời cảnh này.",
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "default": "blur",
+                    "type": "string",
+                    "enum": [
+                      "blur",
+                      "fade",
+                      "slide",
+                      "wipe",
+                      "flip",
+                      "none"
+                    ]
+                  },
+                  "direction": {
+                    "description": "Chỉ dùng cho slide và wipe.",
+                    "type": "string",
+                    "enum": [
+                      "from-left",
+                      "from-right",
+                      "from-top",
+                      "from-bottom"
+                    ]
+                  },
+                  "durationFrames": {
+                    "default": 24,
+                    "description": "Số khung chồng giữa hai cảnh (blur: mờ ra ~1/3, nền trống, hiện vào ~1/2). Lời đọc cảnh sau chỉ bắt đầu khi hình đã hiện.",
+                    "type": "integer",
+                    "minimum": 6,
+                    "maximum": 36
+                  }
+                },
+                "additionalProperties": false
+              },
+              "kind": {
+                "type": "string",
+                "const": "cta"
+              },
+              "question": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 90,
+                "description": "Câu hỏi mở để người xem bình luận. Không \"theo dõi Fanpage\" chung chung."
+              },
+              "hashtags": {
+                "default": [],
+                "maxItems": 5,
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 30
+                }
+              }
+            },
+            "required": [
+              "id",
+              "kind",
+              "question"
+            ],
+            "additionalProperties": false
+          }
+        ]
+      }
+    },
+    "assets": {
+      "default": [],
+      "maxItems": 40,
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_-]{0,39}$"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "image",
+              "video",
+              "audio",
+              "lottie"
+            ]
+          },
+          "origin": {
+            "type": "string",
+            "enum": [
+              "stock",
+              "ai",
+              "brand",
+              "upload",
+              "generated"
+            ]
+          },
+          "provider": {
+            "type": "string",
+            "maxLength": 40
+          },
+          "src": {
+            "type": "string",
+            "maxLength": 500,
+            "pattern": "^(https:\\/\\/|public\\/|assets\\/)"
+          },
+          "alt": {
+            "type": "string",
+            "maxLength": 120
+          },
+          "width": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 8000
+          },
+          "height": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 8000
+          },
+          "durationSeconds": {
+            "type": "number",
+            "minimum": 0.1,
+            "maximum": 600
+          },
+          "aiGenerated": {
+            "default": false,
+            "description": "True với ảnh/video do AI sinh: bắt buộc gắn cờ AI (D-11).",
+            "type": "boolean"
+          },
+          "license": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 60,
+                "description": "Tên giấy phép hoặc nguồn, ví dụ \"Pexels License\", \"Tự tạo\", \"Gemini (AI)\"."
+              },
+              "commercialUse": {
+                "type": "boolean",
+                "description": "Được dùng thương mại không. False thì validate.ts từ chối."
+              },
+              "attributionRequired": {
+                "default": false,
+                "type": "boolean"
+              },
+              "attributionText": {
+                "type": "string",
+                "maxLength": 120
+              },
+              "url": {
+                "type": "string",
+                "maxLength": 300,
+                "format": "uri"
+              }
+            },
+            "required": [
+              "name",
+              "commercialUse"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "required": [
+          "id",
+          "type",
+          "origin",
+          "src",
+          "license"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "narration": {
+      "default": {
+        "enabled": true,
+        "provider": "gemini",
+        "rate": 1
+      },
+      "type": "object",
+      "properties": {
+        "enabled": {
+          "default": true,
+          "type": "boolean"
+        },
+        "provider": {
+          "default": "gemini",
+          "type": "string",
+          "enum": [
+            "gemini",
+            "elevenlabs"
+          ]
+        },
+        "voice": {
+          "type": "string",
+          "maxLength": 60
+        },
+        "rate": {
+          "default": 1,
+          "type": "number",
+          "minimum": 0.8,
+          "maximum": 1.3
+        }
+      },
+      "additionalProperties": false
+    },
+    "music": {
+      "default": null,
+      "anyOf": [
+        {
+          "type": "object",
+          "properties": {
+            "assetId": {
+              "type": "string",
+              "pattern": "^[a-z][a-z0-9_-]{0,39}$",
+              "description": "Bản nhạc trong spec.assets (type=audio, giấy phép dùng thương mại)."
+            },
+            "volume": {
+              "default": 0.12,
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            },
+            "duckDb": {
+              "default": -12,
+              "description": "Hạ nhạc bao nhiêu dB khi có lời đọc.",
+              "type": "number",
+              "minimum": -24,
+              "maximum": -3
+            }
+          },
+          "required": [
+            "assetId"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "captions": {
+      "default": {
+        "enabled": true,
+        "style": "karaoke",
+        "position": "safe-lower",
+        "maxWordsPerPage": 5,
+        "timing": "alignment"
+      },
+      "type": "object",
+      "properties": {
+        "enabled": {
+          "default": true,
+          "type": "boolean"
+        },
+        "style": {
+          "default": "karaoke",
+          "description": "karaoke: từ đang đọc có ô nền màu nhấn (như video mẫu).",
+          "type": "string",
+          "enum": [
+            "karaoke",
+            "tiktok",
+            "subtitle"
+          ]
+        },
+        "position": {
+          "default": "safe-lower",
+          "type": "string",
+          "enum": [
+            "safe-lower",
+            "center"
+          ]
+        },
+        "maxWordsPerPage": {
+          "default": 5,
+          "description": "Video mẫu: tối đa 5 từ, một dòng.",
+          "type": "integer",
+          "minimum": 2,
+          "maximum": 8
+        },
+        "highlight": {
+          "type": "string",
+          "pattern": "^#[0-9a-fA-F]{6}$"
+        },
+        "timing": {
+          "default": "alignment",
+          "description": "alignment: mốc thật từ âm thanh (Whisper/ElevenLabs). estimated: ước lượng theo ký tự, kém chính xác.",
+          "type": "string",
+          "enum": [
+            "alignment",
+            "estimated"
+          ]
+        }
+      },
+      "additionalProperties": false
+    },
+    "transition": {
+      "default": {
+        "type": "blur",
+        "durationFrames": 24
+      },
+      "description": "Chuyển cảnh mặc định giữa các cảnh.",
+      "type": "object",
+      "properties": {
+        "type": {
+          "default": "blur",
+          "type": "string",
+          "enum": [
+            "blur",
+            "fade",
+            "slide",
+            "wipe",
+            "flip",
+            "none"
+          ]
+        },
+        "direction": {
+          "description": "Chỉ dùng cho slide và wipe.",
+          "type": "string",
+          "enum": [
+            "from-left",
+            "from-right",
+            "from-top",
+            "from-bottom"
+          ]
+        },
+        "durationFrames": {
+          "default": 24,
+          "description": "Số khung chồng giữa hai cảnh (blur: mờ ra ~1/3, nền trống, hiện vào ~1/2). Lời đọc cảnh sau chỉ bắt đầu khi hình đã hiện.",
+          "type": "integer",
+          "minimum": 6,
+          "maximum": 36
+        }
+      },
+      "additionalProperties": false
+    },
+    "safeArea": {
+      "default": {
+        "top": 210,
+        "bottom": 320,
+        "left": 60,
+        "right": 120
+      },
+      "type": "object",
+      "properties": {
+        "top": {
+          "default": 210,
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 600
+        },
+        "bottom": {
+          "default": 320,
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 600
+        },
+        "left": {
+          "default": 60,
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 300
+        },
+        "right": {
+          "default": 120,
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 300
+        }
+      },
+      "additionalProperties": false,
+      "description": "Lề an toàn (px, trên khung 1080×1920) tránh giao diện Reels đè lên. ⚠️ Số mặc định từ một nguồn bên thứ ba, cần kiểm trên máy thật."
+    },
+    "qa": {
+      "default": {
+        "minSeconds": 30,
+        "maxSeconds": 60,
+        "maxScenes": 16
+      },
+      "type": "object",
+      "properties": {
+        "minSeconds": {
+          "default": 30,
+          "type": "number",
+          "minimum": 5,
+          "maximum": 120
+        },
+        "maxSeconds": {
+          "default": 60,
+          "type": "number",
+          "minimum": 10,
+          "maximum": 180
+        },
+        "maxScenes": {
+          "default": 16,
+          "type": "integer",
+          "minimum": 3,
+          "maximum": 18
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "version",
+    "id",
+    "market",
+    "language",
+    "source",
+    "scenes"
+  ],
+  "additionalProperties": false
+}
